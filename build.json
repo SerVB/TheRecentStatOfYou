@@ -1,0 +1,12 @@
+{
+  "modVersion": "1.0.0",
+  "wotVersion": "1.1.0",
+  "buildRoot": "./build/",
+  "sourcesRoot": "./src/",
+  "files":
+  [
+    "scripts/client/gui/battle_control/arena_info/arena_dp.py",
+    "scripts/client/gui/battle_control/arena_info/player_format.py",
+    "scripts/client/gui/battle_control/arena_info/mod_recent_stat.py"
+  ]
+}
