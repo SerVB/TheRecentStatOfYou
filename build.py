@@ -2,6 +2,9 @@ import json
 import py_compile
 import os
 import shutil
+import sys
+
+print "Python version: " + sys.version
 
 config = json.load(open("build.json", "r"))
 
