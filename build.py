@@ -4,7 +4,10 @@ import os
 import shutil
 import sys
 
+REQUIRED_PYTHON_VERSION = "2.7.7"
+
 print "Python version: " + sys.version
+assert sys.version.find(REQUIRED_PYTHON_VERSION) == 0
 
 config = json.load(open("build.json", "r"))
 
