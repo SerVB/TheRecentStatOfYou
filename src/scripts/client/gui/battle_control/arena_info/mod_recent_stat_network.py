@@ -15,17 +15,27 @@ def getSiteText(url):
 
 
 def getNextRowCells(string, idx, td="td"):
-    cellBegin = "<%s>" % td
+    cellBegin = "<%s" % td
     cellEnd = "</%s>" % td
 
     answer = list()
     rowEndIdx = string.find("</tr>", idx)
-    nowTdIdx = string.find(cellBegin, idx)
-    while nowTdIdx != -1 and nowTdIdx < rowEndIdx:
+    nowTdIdx = string.find(cellBegin, idx, rowEndIdx)
+    while nowTdIdx != -1:
         nowTdBeginIdx = string.find(">", nowTdIdx) + 1
         nowTdEndIdx = string.find(cellEnd, nowTdIdx)
 
-        answer.append(string[nowTdBeginIdx:nowTdEndIdx])
+        colspan = 1
+        colspanBeginIdx = string.find("colspan", nowTdIdx, nowTdBeginIdx)
+        if colspanBeginIdx != -1:
+            colspanValueBeginIdx = string.find("'", colspanBeginIdx, nowTdBeginIdx) + 1
+            assert colspanValueBeginIdx != -1
+            colspanValueEndIdx = string.find("'", colspanValueBeginIdx, nowTdBeginIdx)
+            assert colspanValueEndIdx != -1
+            colspan = int(string[colspanValueBeginIdx:colspanValueEndIdx])
+
+        for _i in range(colspan):
+            answer.append(string[nowTdBeginIdx:nowTdEndIdx])
 
         nowTdIdx = string.find(cellBegin, nowTdEndIdx)
 

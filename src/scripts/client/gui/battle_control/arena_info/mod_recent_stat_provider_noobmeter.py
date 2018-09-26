@@ -3,7 +3,7 @@
 
 import traceback
 
-from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN
+from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN, COLUMN_ID_NOT_FOUND, MAX_ITERATIONS
 from mod_recent_stat_network import getSiteText, getNextRowCells, getNumberFromCell
 
 
@@ -19,6 +19,63 @@ def getPlayerId(idSiteText, nickname):
         return -1
 
 
+def _getStatTableBeginIdx(siteText):
+    iterations = 0
+
+    tableBeginIdx = 0
+    while True:
+        tableBeginIdx = siteText.find("<table", tableBeginIdx + 1)
+        classBeginIdx = siteText.find("tablesorter", tableBeginIdx)
+        endTableBeginIdx = siteText.find(">", tableBeginIdx)
+        if classBeginIdx < endTableBeginIdx:
+            break
+
+        assert iterations < MAX_ITERATIONS
+        iterations += 1
+
+    return tableBeginIdx
+
+
+def _getOverallAndRecentColumnIdx(siteText, tableBeginIdx):
+    ths = getNextRowCells(siteText, tableBeginIdx, "th")
+
+    overallColumnIdx = COLUMN_ID_NOT_FOUND
+    recentColumnIdx = COLUMN_ID_NOT_FOUND
+
+    for i, th in reversed(tuple(enumerate(ths))):
+        if "Общий" in th or "Overall" in th:
+            overallColumnIdx = i
+        if "~1000" in th or "~1,000" in th:
+            recentColumnIdx = i
+
+    assert overallColumnIdx != COLUMN_ID_NOT_FOUND
+
+    return overallColumnIdx, recentColumnIdx
+
+
+def _getTrsWithData(siteText, tableBeginIdx):
+    iterations = 0
+
+    headerEndIdx = siteText.find("</tr>", tableBeginIdx)
+    tableEndIdx = siteText.find("</table>", headerEndIdx)
+    nextTrBeginIdx = headerEndIdx
+
+    trs = list()
+
+    while nextTrBeginIdx != -1 and nextTrBeginIdx < tableEndIdx:
+        nowTrBeginIdx = nextTrBeginIdx
+
+        tds = getNextRowCells(siteText, nowTrBeginIdx)
+        trs.append(tds)
+
+        nextTrBeginIdx = siteText.find("<tr", nowTrBeginIdx + 1)
+
+        assert iterations < MAX_ITERATIONS
+        iterations += 1
+
+    return trs
+
+
 def getStatistics(region, nickname, playerId):
     if playerId == PLAYER_ID_NOT_KNOWN:
         idSiteText = getSiteText("http://www.noobmeter.com/player/%s/%s" % (region, nickname))
@@ -29,65 +86,32 @@ def getStatistics(region, nickname, playerId):
     siteText = siteText.replace("&nbsp;", " ").replace('"', "'")
 
     try:
-        MAX_ITERATIONS = 1000
-        iterations = 0
-
-        tableBeginIdx = 0
-        while True:
-            tableBeginIdx = siteText.find("<table", tableBeginIdx + 1)
-            classBeginIdx = siteText.find("'tablesorter'", tableBeginIdx)
-            endTableBeginIdx = siteText.find(">", tableBeginIdx)
-            if classBeginIdx < endTableBeginIdx:
-                break
-
-            assert iterations < MAX_ITERATIONS
-            iterations += 1
-
-        headerEndIdx = siteText.find("</tr>", tableBeginIdx)
-
-        ths = getNextRowCells(siteText, tableBeginIdx, "th")
-
-        overallCol = -1
-        recentCol = -1
-
-        for i, th in enumerate(ths):
-            if "Общий" in th or "Overall" in th:
-                overallCol = i
-            if "~1000" in th or "~1,000" in th:
-                recentCol = i
-
-        tableEndIdx = siteText.find("</table>", headerEndIdx)
-
-        trBeginIdx = headerEndIdx
+        tableBeginIdx = _getStatTableBeginIdx(siteText)
+        overallColumnIdx, recentColumnIdx = _getOverallAndRecentColumnIdx(siteText, tableBeginIdx)
+        trs = _getTrsWithData(siteText, tableBeginIdx)
 
         wn8 = ""
         battlesRecent = None
         battlesOverall = ""
 
-        while trBeginIdx != -1 and trBeginIdx < tableEndIdx:
-            tds = getNextRowCells(siteText, trBeginIdx)
+        for tds in trs:
             if len(tds) != 0:
                 loweredRowTitle = tds[0].lower()
 
                 if "wn8" in loweredRowTitle:
-                    if recentCol != -1:
-                        wn8ParsedStr = getNumberFromCell(tds[recentCol])
+                    if recentColumnIdx != -1:
+                        wn8ParsedStr = getNumberFromCell(tds[recentColumnIdx])
                     else:
-                        wn8ParsedStr = getNumberFromCell(tds[overallCol])
+                        wn8ParsedStr = getNumberFromCell(tds[overallColumnIdx])
 
                     if wn8ParsedStr is not None:
                         wn8 = wn8ParsedStr
                 elif "battles:" in loweredRowTitle or "кол. боёв:" in loweredRowTitle:
-                    if recentCol != -1:
-                        battlesRecent = getNumberFromCell(tds[recentCol])
+                    if recentColumnIdx != -1:
+                        battlesRecent = getNumberFromCell(tds[recentColumnIdx])
 
-                    battlesOverall = getNumberFromCell(tds[overallCol])
+                    battlesOverall = getNumberFromCell(tds[overallColumnIdx])
                     pass
-
-            trBeginIdx = siteText.find("<tr", trBeginIdx + 1)
-
-            assert iterations < MAX_ITERATIONS
-            iterations += 1
 
         playerStat = wn8 + "["
         if battlesRecent is not None:
