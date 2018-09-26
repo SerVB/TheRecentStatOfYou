@@ -3,16 +3,15 @@
 
 import traceback
 
-from mod_recent_stat_config import REGION_SETTING
+from mod_recent_stat_config import REGION_SETTING, GET_STATISTICS
 from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN
 from mod_recent_stat_logging import logInfo, logError
-from mod_recent_stat_provider_noobmeter import getStatistics
 
 _formatted = dict()  # {playerName: formattedPlayerName}
 
 
 def _updatePlayerName(playerName, playerId):
-    playerStat = getStatistics(REGION_SETTING, playerName, playerId)
+    playerStat = GET_STATISTICS(REGION_SETTING, playerName, playerId)
     newName = playerStat + playerName
     _formatted[playerName] = newName
 

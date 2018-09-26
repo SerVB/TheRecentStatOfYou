@@ -1,6 +1,6 @@
 {
-  "modVersion": "1.0.0",
-  "wotVersion": "1.1.0",
+  "modVersion": "release2",
+  "wotVersion": "1.1.0.1",
   "buildRoot": "./build/",
   "sourcesRoot": "./src/",
   "files":
@@ -12,6 +12,7 @@
     "scripts/client/gui/battle_control/arena_info/mod_recent_stat_container.py",
     "scripts/client/gui/battle_control/arena_info/mod_recent_stat_logging.py",
     "scripts/client/gui/battle_control/arena_info/mod_recent_stat_network.py",
+    "scripts/client/gui/battle_control/arena_info/mod_recent_stat_provider_kttc.py",
     "scripts/client/gui/battle_control/arena_info/mod_recent_stat_provider_noobmeter.py"
   ]
 }

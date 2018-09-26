@@ -84,7 +84,6 @@ def getStatistics(region, nickname, playerId):
         logInfo("Player ID of %s = %s" % (nickname, playerId))
 
     siteText = getSiteText("http://www.noobmeter.com/player/%s/%s/%d" % (region, nickname, playerId))
-    siteText = siteText.replace("&nbsp;", " ").replace('"', "'")
 
     try:
         tableBeginIdx = _getStatTableBeginIdx(siteText)
@@ -116,7 +115,7 @@ def getStatistics(region, nickname, playerId):
         playerStat = wn8 + "["
         if battlesRecent is not None:
             playerStat += battlesRecent + "/"
-        playerStat += str(int(round(int(battlesOverall) / 1000))) + "k]"
+        playerStat += str(int(round(int(battlesOverall) / 1000.0))) + "k]"
 
         return playerStat
     except BaseException:

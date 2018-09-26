@@ -6,7 +6,7 @@ import traceback
 
 def getSiteText(url):
     import urllib2
-    html = urllib2.urlopen(url=url).read()
+    html = urllib2.urlopen(url=url).read().replace("&nbsp;", " ").replace('"', "'")
     return html
 
 
@@ -30,7 +30,7 @@ def getNextRowCells(string, idx, td="td"):
             assert colspanValueEndIdx != -1, "No colspan end found in %s" % string[nowTdIdx:nowTdBeginIdx]
             colspan = int(string[colspanValueBeginIdx:colspanValueEndIdx])
 
-        for _i in range(colspan):
+        for _ in range(colspan):
             answer.append(string[nowTdBeginIdx:nowTdEndIdx])
 
         nowTdIdx = string.find(cellBegin, nowTdEndIdx)
