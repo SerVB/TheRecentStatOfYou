@@ -1,4 +1,5 @@
 # The Recent Stat of You
+[![Python 2.7.7](https://img.shields.io/badge/python-2.7.7-blue.svg)](https://www.python.org/download/releases/2.7.7/)
 [![Build status](https://travis-ci.org/SerVB/TheRecentStatOfYou.svg?master)](https://travis-ci.org/SerVB/TheRecentStatOfYou)
 
 Мод с открытым исходным кодом для отображения недавней статистики игроков в бою.
