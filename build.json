@@ -7,6 +7,10 @@
   [
     "scripts/client/gui/battle_control/arena_info/arena_dp.py",
     "scripts/client/gui/battle_control/arena_info/player_format.py",
-    "scripts/client/gui/battle_control/arena_info/mod_recent_stat.py"
+    "scripts/client/gui/battle_control/arena_info/mod_recent_stat_config.py",
+    "scripts/client/gui/battle_control/arena_info/mod_recent_stat_constant.py",
+    "scripts/client/gui/battle_control/arena_info/mod_recent_stat_container.py",
+    "scripts/client/gui/battle_control/arena_info/mod_recent_stat_network.py",
+    "scripts/client/gui/battle_control/arena_info/mod_recent_stat_provider_noobmeter.py"
   ]
 }

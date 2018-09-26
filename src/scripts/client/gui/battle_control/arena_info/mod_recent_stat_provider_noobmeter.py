@@ -1,20 +1,10 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
-REGION_SETTING = "ru"
+import traceback
 
-_formatted = dict()  # {playerName: formattedPlayerName}
-_PLAYER_ID_NOT_KNOWN = -1
-
-
-def getSiteText(url):
-    try:
-        import urllib2
-        html = urllib2.urlopen(url=url).read()
-        return html
-    except Exception as e:
-        print "[---! The Recent Stat of You] Can't get site text. Reason: %s" % e
-        return ""
+from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN
+from mod_recent_stat_network import getSiteText, getNextRowCells, getNumberFromCell
 
 
 def getPlayerId(idSiteText, nickname):
@@ -25,66 +15,12 @@ def getPlayerId(idSiteText, nickname):
         idEndIndex = idSiteText.find("-->", idStartIndex) - 1
         return int(idSiteText[idStartIndex:idEndIndex].strip())
     except Exception as e:
-        print "[---! The Recent Stat of You] Can't get id from text. Reason: %s" % e
+        print "[---! The Recent Stat of You] Can't get id from text. Reason: %s" % traceback.format_exc()
         return -1
 
 
-def getNextRowCells(string, idx, td="td"):
-    cellBegin = "<%s>" % td
-    cellEnd = "</%s>" % td
-
-    answer = list()
-    rowEndIdx = string.find("</tr>", idx)
-    nowTdIdx = string.find(cellBegin, idx)
-    while nowTdIdx != -1 and nowTdIdx < rowEndIdx:
-        nowTdBeginIdx = string.find(">", nowTdIdx) + 1
-        nowTdEndIdx = string.find(cellEnd, nowTdIdx)
-
-        answer.append(string[nowTdBeginIdx:nowTdEndIdx])
-
-        nowTdIdx = string.find(cellBegin, nowTdEndIdx)
-
-    return answer
-
-
-def removeTags(text):
-    add = True
-    answer = ""
-
-    for c in text:
-        if c == "<":
-            add = False
-        elif c == ">":
-            add = True
-        elif add:
-            answer += c
-
-    return answer
-
-
-# Returns str of number in <td>...</td> or None if not found
-def getNumberFromCell(tdText):
-    split = removeTags(tdText).replace(",", " ").split()
-
-    data = None
-
-    for i in range(len(split) - 1):
-        if split[i].isdigit() and split[i + 1].isdigit():
-            data = split[i] + split[i + 1]
-
-            return data
-
-    for i in range(len(split)):
-        if split[i].isdigit():
-            data = split[i]
-
-    return data
-
-
 def getStatistics(region, nickname, playerId):
-    traceback = None
-
-    if playerId == _PLAYER_ID_NOT_KNOWN:
+    if playerId == PLAYER_ID_NOT_KNOWN:
         idSiteText = getSiteText("http://www.noobmeter.com/player/%s/%s" % (region, nickname))
         playerId = getPlayerId(idSiteText, nickname)
         print "[--- The Recent Stat of You] Player ID of %s = %s" % (nickname, playerId)
@@ -93,8 +29,6 @@ def getStatistics(region, nickname, playerId):
     siteText = siteText.replace("&nbsp;", " ").replace('"', "'")
 
     try:
-        import traceback
-
         MAX_ITERATIONS = 1000
         iterations = 0
 
@@ -162,45 +96,7 @@ def getStatistics(region, nickname, playerId):
 
         return playerStat
     except Exception:
-        print "[--- The Recent Stat of You] Error in getStatistics(%s, %s, %s)" % (region, nickname, playerId)
+        print "[--- The Recent Stat of You] Error in getStatistics(%s, %s, %s):" % (region, nickname, playerId)
         print traceback.format_exc()
         return "[?-?]"
 
-
-def _updatePlayerName(playerName, playerId):
-    playerStat = getStatistics(REGION_SETTING, playerName, playerId)
-    newName = playerStat + playerName
-    _formatted[playerName] = newName
-
-
-def formattedPlayerName(playerName):
-    return _formatted.get(playerName, "[?]" + playerName)
-
-
-def updatePlayerFormatByVehicleList(vehicles, forced=False):
-    try:
-        from threading import Thread
-
-        vehicleInfoTasks = set()
-
-        for vID, vData in vehicles.iteritems():
-            if "name" in vData:
-                playerName = vData["name"]
-
-                if not forced and playerName in _formatted:
-                    continue
-
-                playerId = vData.get("accountDBID", _PLAYER_ID_NOT_KNOWN)
-
-                task = Thread(target=_updatePlayerName, args=(playerName, playerId))
-                vehicleInfoTasks.add(task)
-                task.start()
-
-        print "[--- The Recent Stat of You] Vehicle info task count: %d" % len(vehicleInfoTasks)
-
-        for task in vehicleInfoTasks:
-            task.join()
-
-        print "[--- The Recent Stat of You] Tasks are joined"
-    except Exception as e:
-        print "[---! The Recent Stat of You] Can't update player format by vehicle list. Reason: %s" % e
