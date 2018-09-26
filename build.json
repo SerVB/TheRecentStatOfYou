@@ -10,6 +10,7 @@
     "scripts/client/gui/battle_control/arena_info/mod_recent_stat_config.py",
     "scripts/client/gui/battle_control/arena_info/mod_recent_stat_constant.py",
     "scripts/client/gui/battle_control/arena_info/mod_recent_stat_container.py",
+    "scripts/client/gui/battle_control/arena_info/mod_recent_stat_logging.py",
     "scripts/client/gui/battle_control/arena_info/mod_recent_stat_network.py",
     "scripts/client/gui/battle_control/arena_info/mod_recent_stat_provider_noobmeter.py"
   ]
