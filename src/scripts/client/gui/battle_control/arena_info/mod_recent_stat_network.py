@@ -25,9 +25,9 @@ def getNextRowCells(string, idx, td="td"):
         colspanBeginIdx = string.find("colspan", nowTdIdx, nowTdBeginIdx)
         if colspanBeginIdx != -1:
             colspanValueBeginIdx = string.find("'", colspanBeginIdx, nowTdBeginIdx) + 1
-            assert colspanValueBeginIdx != -1
+            assert colspanValueBeginIdx != -1, "No colspan begin found in %s" % string[nowTdIdx:nowTdBeginIdx]
             colspanValueEndIdx = string.find("'", colspanValueBeginIdx, nowTdBeginIdx)
-            assert colspanValueEndIdx != -1
+            assert colspanValueEndIdx != -1, "No colspan end found in %s" % string[nowTdIdx:nowTdBeginIdx]
             colspan = int(string[colspanValueBeginIdx:colspanValueEndIdx])
 
         for _i in range(colspan):

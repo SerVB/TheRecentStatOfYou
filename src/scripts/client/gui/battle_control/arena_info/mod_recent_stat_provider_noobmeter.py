@@ -31,7 +31,7 @@ def _getStatTableBeginIdx(siteText):
         if classBeginIdx < endTableBeginIdx:
             break
 
-        assert iterations < MAX_ITERATIONS
+        assert iterations < MAX_ITERATIONS, "Too many iterations: %s" % iterations
         iterations += 1
 
     return tableBeginIdx
@@ -49,7 +49,7 @@ def _getOverallAndRecentColumnIdx(siteText, tableBeginIdx):
         if "~1000" in th or "~1,000" in th:
             recentColumnIdx = i
 
-    assert overallColumnIdx != COLUMN_ID_NOT_FOUND
+    assert overallColumnIdx != COLUMN_ID_NOT_FOUND, "No overall column found in %s" % ths
 
     return overallColumnIdx, recentColumnIdx
 
@@ -71,7 +71,7 @@ def _getTrsWithData(siteText, tableBeginIdx):
 
         nextTrBeginIdx = siteText.find("<tr", nowTrBeginIdx + 1)
 
-        assert iterations < MAX_ITERATIONS
+        assert iterations < MAX_ITERATIONS, "Too many iterations: %s" % iterations
         iterations += 1
 
     return trs
