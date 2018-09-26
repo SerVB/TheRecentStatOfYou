@@ -5,13 +5,9 @@ import traceback
 
 
 def getSiteText(url):
-    try:
-        import urllib2
-        html = urllib2.urlopen(url=url).read()
-        return html
-    except Exception as e:
-        print "[---! The Recent Stat of You] Can't get site text. Reason: %s" % traceback.format_exc()
-        return ""
+    import urllib2
+    html = urllib2.urlopen(url=url).read()
+    return html
 
 
 def getNextRowCells(string, idx, td="td"):

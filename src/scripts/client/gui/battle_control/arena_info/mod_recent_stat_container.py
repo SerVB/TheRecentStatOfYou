@@ -5,6 +5,7 @@ import traceback
 
 from mod_recent_stat_config import REGION_SETTING
 from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN
+from mod_recent_stat_logging import logInfo, logError
 from mod_recent_stat_provider_noobmeter import getStatistics
 
 _formatted = dict()  # {playerName: formattedPlayerName}
@@ -39,11 +40,11 @@ def updatePlayerFormatByVehicleList(vehicles, forced=False):
                 vehicleInfoTasks.add(task)
                 task.start()
 
-        print "[--- The Recent Stat of You] Vehicle info task count: %d" % len(vehicleInfoTasks)
+        logInfo("Vehicle info task count: %d" % len(vehicleInfoTasks))
 
         for task in vehicleInfoTasks:
             task.join()
 
-        print "[--- The Recent Stat of You] Tasks are joined"
-    except Exception as e:
-        print "[---! The Recent Stat of You] Can't update player format by vehicle list. Reason: %s" % traceback.format_exc()
+        logInfo("Tasks are joined")
+    except BaseException:
+        logError("Can't update player format by vehicle list", traceback.format_exc())

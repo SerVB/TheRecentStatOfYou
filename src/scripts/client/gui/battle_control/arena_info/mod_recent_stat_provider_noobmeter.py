@@ -4,6 +4,7 @@
 import traceback
 
 from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN, COLUMN_ID_NOT_FOUND, MAX_ITERATIONS
+from mod_recent_stat_logging import logInfo, logError
 from mod_recent_stat_network import getSiteText, getNextRowCells, getNumberFromCell
 
 
@@ -14,9 +15,9 @@ def getPlayerId(idSiteText, nickname):
         idStartIndex = idSiteText.find("<!--", nameTitleEndIndex) + len("<!--")
         idEndIndex = idSiteText.find("-->", idStartIndex) - 1
         return int(idSiteText[idStartIndex:idEndIndex].strip())
-    except Exception as e:
-        print "[---! The Recent Stat of You] Can't get id from text. Reason: %s" % traceback.format_exc()
-        return -1
+    except BaseException:
+        logError("Can't get id from text", traceback.format_exc())
+        return PLAYER_ID_NOT_KNOWN
 
 
 def _getStatTableBeginIdx(siteText):
@@ -80,7 +81,7 @@ def getStatistics(region, nickname, playerId):
     if playerId == PLAYER_ID_NOT_KNOWN:
         idSiteText = getSiteText("http://www.noobmeter.com/player/%s/%s" % (region, nickname))
         playerId = getPlayerId(idSiteText, nickname)
-        print "[--- The Recent Stat of You] Player ID of %s = %s" % (nickname, playerId)
+        logInfo("Player ID of %s = %s" % (nickname, playerId))
 
     siteText = getSiteText("http://www.noobmeter.com/player/%s/%s/%d" % (region, nickname, playerId))
     siteText = siteText.replace("&nbsp;", " ").replace('"', "'")
@@ -111,7 +112,6 @@ def getStatistics(region, nickname, playerId):
                         battlesRecent = getNumberFromCell(tds[recentColumnIdx])
 
                     battlesOverall = getNumberFromCell(tds[overallColumnIdx])
-                    pass
 
         playerStat = wn8 + "["
         if battlesRecent is not None:
@@ -119,8 +119,6 @@ def getStatistics(region, nickname, playerId):
         playerStat += str(int(round(int(battlesOverall) / 1000))) + "k]"
 
         return playerStat
-    except Exception:
-        print "[--- The Recent Stat of You] Error in getStatistics(%s, %s, %s):" % (region, nickname, playerId)
-        print traceback.format_exc()
+    except BaseException:
+        logError("Error in getStatistics(%s, %s, %s)" % (region, nickname, playerId), traceback.format_exc())
         return "[?-?]"
-
