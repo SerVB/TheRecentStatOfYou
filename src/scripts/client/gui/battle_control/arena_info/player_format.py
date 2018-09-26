@@ -4,7 +4,7 @@ from collections import namedtuple
 from helpers import dependency
 from skeletons.gui.lobby_context import ILobbyContext
 
-from mod_recent_stat import formattedPlayerName
+from gui.battle_control.arena_info.mod_recent_stat_container import formattedPlayerName
 
 class _FORMAT_MASK(object):
     NONE = 0

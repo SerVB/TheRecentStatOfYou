@@ -19,7 +19,7 @@ from skeletons.gui.lobby_context import ILobbyContext
 from gui.battle_control.arena_info.arena_vos import EPIC_BATTLE_KEYS
 from constants import PLAYER_RANK
 
-from mod_recent_stat import updatePlayerFormatByVehicleList
+from gui.battle_control.arena_info.mod_recent_stat_container import updatePlayerFormatByVehicleList
 
 _logger = logging.getLogger(__name__)
 _OP = settings.INVALIDATE_OP
