@@ -50,19 +50,18 @@ def _getPlayerId(mainSiteText):
 
 def getStatistics(region, nickname, playerId):
     try:
-        mainSiteText = getSiteText("https://kttc.ru/wot/%s/user/%s/" % (region, nickname))
-
         if playerId == PLAYER_ID_NOT_KNOWN:
+            mainSiteText = getSiteText("https://kttc.ru/wot/%s/user/%s/" % (region, nickname))
             playerId = _getPlayerId(mainSiteText)
             logInfo("Player ID of %s = %s" % (nickname, playerId))
 
         _updateStatus = getSiteText("https://kttc.ru/wot/%s/statistics/user/update/%s/" % (region, playerId))
 
-        mainSiteText = getSiteText("https://kttc.ru/wot/%s/user/%s/" % (region, nickname))
-        overallStatTable = _getStatTable(mainSiteText)
+        overallJson = json.loads(getSiteText("https://kttc.ru/wot/%s/user/%s/get-user-json/%s/" % (region, nickname, playerId)).replace("'", '"'))
+        assert overallJson["success"], "Overall json isn't successful: %s" % overallJson
 
-        wn8 = str(int(round(overallStatTable["WN8"])))
-        battlesOverall = overallStatTable["BT"]
+        wn8 = overallJson["data"]["wn8"]
+        battlesOverall = overallJson["data"]["currentBattles"]
         battlesRecent = None
 
         recentStatJson = json.loads(getSiteText("https://kttc.ru/wot/ru/user/%s/get-by-battles/%s/" % (nickname, playerId)).replace("'", '"'))
