@@ -5,14 +5,13 @@
   "sourcesRoot": "./src/",
   "files":
   [
-    "scripts/client/gui/battle_control/arena_info/arena_dp.py",
-    "scripts/client/gui/battle_control/arena_info/player_format.py",
-    "scripts/client/gui/battle_control/arena_info/mod_recent_stat_config.py",
-    "scripts/client/gui/battle_control/arena_info/mod_recent_stat_constant.py",
-    "scripts/client/gui/battle_control/arena_info/mod_recent_stat_container.py",
-    "scripts/client/gui/battle_control/arena_info/mod_recent_stat_logging.py",
-    "scripts/client/gui/battle_control/arena_info/mod_recent_stat_network.py",
-    "scripts/client/gui/battle_control/arena_info/mod_recent_stat_provider_kttc.py",
-    "scripts/client/gui/battle_control/arena_info/mod_recent_stat_provider_noobmeter.py"
+    "scripts/client/gui/mod_recent_stat/__init__.py",
+    "scripts/client/gui/mod_recent_stat/mod_recent_stat_config.py",
+    "scripts/client/gui/mod_recent_stat/mod_recent_stat_constant.py",
+    "scripts/client/gui/mod_recent_stat/mod_recent_stat_container.py",
+    "scripts/client/gui/mod_recent_stat/mod_recent_stat_logging.py",
+    "scripts/client/gui/mod_recent_stat/mod_recent_stat_network.py",
+    "scripts/client/gui/mod_recent_stat/mod_recent_stat_provider_kttc.py",
+    "scripts/client/gui/mod_recent_stat/mod_recent_stat_provider_noobmeter.py"
   ]
 }
