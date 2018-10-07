@@ -62,4 +62,6 @@
 - **VasyaPRO_2014** &mdash; идея создания мода статистики в бою с открытым исходным кодом; система сборки мода ([тема на Korean Random](https://koreanrandom.com/forum/topic/29691-09152-%D1%81%D1%82%D0%B0%D1%82%D0%B8%D1%81%D1%82%D0%B8%D0%BA%D0%B0-%D0%B8%D0%B3%D1%80%D0%BE%D0%BA%D0%BE%D0%B2-%D0%B2-%D0%B1%D0%BE%D1%8E-%D0%B1%D0%B5%D0%B7-xvm/), [репозиторий на GitHub](https://github.com/VasyaPRO/StatsInBattle)).
 - Проект [WorldOfTanks-Decompiled](https://github.com/StranikS-Scan/WorldOfTanks-Decompiled/) &mdash; декомпилированные файлы танкового клиента использовались для создания мода.
 - Сайты [kttc.ru](https://kttc.ru/) и [noobmeter.com](http://noobmeter.com/) &mdash; провайдеры недавней статистики игроков.
+- [Гайд](https://koreanrandom.com/forum/topic/36987-mod-packages-%D0%BF%D0%B0%D0%BA%D0%B5%D1%82%D1%8B-%D0%BC%D0%BE%D0%B4%D0%BE%D0%B2/) по созданию `.wotmod` пакетов.
+- **Ekspoint** указал, что просто модифицировать файлы игры не стоит, а также показал, как это сделать правильно. 
 - [Люди](https://github.com/SerVB/TheRecentStatOfYou/graphs/contributors), которые контрибьютили непосредственно в проект.
