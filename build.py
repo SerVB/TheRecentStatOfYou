@@ -3,6 +3,7 @@ import py_compile
 import os
 import shutil
 import sys
+import zipfile
 
 REQUIRED_PYTHON_VERSION = "2.7.7"
 
@@ -15,19 +16,21 @@ print "Remove %s dir" % config["buildRoot"]
 
 if os.path.isdir(config["buildRoot"]):  # Remove build dir
     shutil.rmtree(config["buildRoot"])
+os.makedirs(config["buildRoot"])
 
-for filePath in config["files"]:
-    assert filePath[-3:] == ".py"
+packagedFilePath = config["buildRoot"] + config["packageName"] + "_" + config["modVersion"] + ".wotmod"
 
-    sourceFileAbsolutePath = config["sourcesRoot"] + filePath
-    destinationFileAbsolutePath = "build/res_mods/" + config["wotVersion"] + "/" + filePath + "c"
-    destinationFileAbsoluteDir = destinationFileAbsolutePath[:destinationFileAbsolutePath.rfind("/")]
+with zipfile.ZipFile(packagedFilePath, "w", zipfile.ZIP_STORED) as packagedFile:
+    for filePath in config["files"]:
+        assert filePath[-3:] == ".py"
 
-    if not os.path.isdir(destinationFileAbsoluteDir):
-        os.makedirs(destinationFileAbsoluteDir)
+        sourceFileAbsolutePath = config["sourcesRoot"] + filePath
+        py_compile.compile(sourceFileAbsolutePath)
 
-    py_compile.compile(sourceFileAbsolutePath)
-    sourceCompiledFileAbsolutePath = sourceFileAbsolutePath + "c"
-    os.rename(sourceCompiledFileAbsolutePath, destinationFileAbsolutePath)
+        destinationFilePackagePath = "res/" + filePath + "c"
+        sourceCompiledFileAbsolutePath = sourceFileAbsolutePath + "c"
+        packagedFile.write(sourceCompiledFileAbsolutePath, arcname=destinationFilePackagePath)
+        os.remove(sourceCompiledFileAbsolutePath)
 
 print "Files compiled: %d" % len(config["files"])
+print "Package compiled: %s" % packagedFilePath
