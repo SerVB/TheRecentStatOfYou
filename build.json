@@ -5,13 +5,13 @@
   "sourcesRoot": "./src/",
   "files":
   [
-    "scripts/client/gui/mod_recent_stat/__init__.py",
-    "scripts/client/gui/mod_recent_stat/mod_recent_stat_config.py",
-    "scripts/client/gui/mod_recent_stat/mod_recent_stat_constant.py",
-    "scripts/client/gui/mod_recent_stat/mod_recent_stat_container.py",
-    "scripts/client/gui/mod_recent_stat/mod_recent_stat_logging.py",
-    "scripts/client/gui/mod_recent_stat/mod_recent_stat_network.py",
-    "scripts/client/gui/mod_recent_stat/mod_recent_stat_provider_kttc.py",
-    "scripts/client/gui/mod_recent_stat/mod_recent_stat_provider_noobmeter.py"
+    "scripts/client/gui/mods/mod_recent_stat_config.py",
+    "scripts/client/gui/mods/mod_recent_stat_constant.py",
+    "scripts/client/gui/mods/mod_recent_stat_container.py",
+    "scripts/client/gui/mods/mod_recent_stat_loader.py",
+    "scripts/client/gui/mods/mod_recent_stat_logging.py",
+    "scripts/client/gui/mods/mod_recent_stat_network.py",
+    "scripts/client/gui/mods/mod_recent_stat_provider_kttc.py",
+    "scripts/client/gui/mods/mod_recent_stat_provider_noobmeter.py"
   ]
 }
