@@ -11,23 +11,23 @@ from mod_recent_stat_container import updatePlayerFormatByVehicleList, formatted
 logInfo("Mod loading started")
 
 
-def new_buildVehiclesData(self, vehicles):
+def buildVehiclesDataNew(self, vehicles):
     updatePlayerFormatByVehicleList(vehicles)
-    old_buildVehiclesData(self, vehicles)
+    buildVehiclesDataOld(self, vehicles)
 
 
-old_buildVehiclesData = ArenaDataProvider.buildVehiclesData
-ArenaDataProvider.buildVehiclesData = new_buildVehiclesData
+buildVehiclesDataOld = ArenaDataProvider.buildVehiclesData
+ArenaDataProvider.buildVehiclesData = buildVehiclesDataNew
 
 
-def new_player_format(self, vInfoVO, playerName=None):
-    result = old_player_format(self, vInfoVO, playerName)
+def player_formatNew(self, vInfoVO, playerName=None):
+    result = player_formatOld(self, vInfoVO, playerName)
     playerName = formattedPlayerName(result.playerName)
     return PlayerFormatResult(result.playerFullName, playerName, result.clanAbbrev, result.regionCode, result.vehicleName)
 
 
-old_player_format = PlayerFullNameFormatter.format
-PlayerFullNameFormatter.format = new_player_format
+player_formatOld = PlayerFullNameFormatter.format
+PlayerFullNameFormatter.format = player_formatNew
 
 
 logInfo("Mod loading finished")
