@@ -12,6 +12,7 @@
     "scripts/client/gui/mods/mod_recent_stat_loader.py",
     "scripts/client/gui/mods/mod_recent_stat_logging.py",
     "scripts/client/gui/mods/mod_recent_stat_network.py",
+    "scripts/client/gui/mods/mod_recent_stat_provider.py",
     "scripts/client/gui/mods/mod_recent_stat_provider_kttc.py",
     "scripts/client/gui/mods/mod_recent_stat_provider_noobmeter.py"
   ]

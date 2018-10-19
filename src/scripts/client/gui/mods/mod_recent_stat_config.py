@@ -2,18 +2,19 @@
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
 from mod_recent_stat_constant import STAT_PROVIDER
-import mod_recent_stat_provider_kttc
-import mod_recent_stat_provider_noobmeter
+from mod_recent_stat_logging import logError
+from mod_recent_stat_provider_kttc import Kttc
+from mod_recent_stat_provider_noobmeter import Noobmeter
 
 REGION_SETTING = "ru"
-PROVIDER = STAT_PROVIDER.KTTC
-GET_STATISTICS = None
+PROVIDER_NAME = STAT_PROVIDER.KTTC
+PROVIDER = None
 
-if PROVIDER not in STAT_PROVIDER.SUPPORTED:
-    assert False, "Stat provider isn't supported: %s" % PROVIDER
-elif PROVIDER == STAT_PROVIDER.KTTC:
-    GET_STATISTICS = mod_recent_stat_provider_kttc.getStatistics
-elif PROVIDER == STAT_PROVIDER.NOOBMETER:
-    GET_STATISTICS = mod_recent_stat_provider_noobmeter.getStatistics
+if PROVIDER_NAME not in STAT_PROVIDER.SUPPORTED:
+    assert False, "Stat provider isn't supported: %s" % PROVIDER_NAME
+elif PROVIDER_NAME == STAT_PROVIDER.KTTC:
+    PROVIDER = Kttc()
+elif PROVIDER_NAME == STAT_PROVIDER.NOOBMETER:
+    PROVIDER = Noobmeter()
 else:
-    assert False, "Stat provider is supported but not meant by the config initializer: %s" % PROVIDER
+    logError("Stat provider is supported but not meant by the config initializer: %s" % PROVIDER_NAME, "")

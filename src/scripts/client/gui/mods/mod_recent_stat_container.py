@@ -3,7 +3,7 @@
 
 import traceback
 
-from mod_recent_stat_config import REGION_SETTING, GET_STATISTICS
+from mod_recent_stat_config import REGION_SETTING, PROVIDER
 from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN
 from mod_recent_stat_logging import logInfo, logError
 
@@ -11,7 +11,7 @@ _formatted = dict()  # {playerName: formattedPlayerName}
 
 
 def _updatePlayerName(playerName, playerId):
-    playerStat = GET_STATISTICS(REGION_SETTING, playerName, playerId)
+    playerStat = PROVIDER.getStatistics(REGION_SETTING, playerName, playerId)
     newName = playerStat + playerName
     _formatted[playerName] = newName
 
@@ -30,7 +30,7 @@ def updatePlayerFormatByVehicleList(vehicles, forced=False):
             if "name" in vData:
                 playerName = vData["name"]
 
-                if not forced and playerName in _formatted:
+                if playerName in _formatted and not forced:
                     continue
 
                 playerId = vData.get("accountDBID", PLAYER_ID_NOT_KNOWN)

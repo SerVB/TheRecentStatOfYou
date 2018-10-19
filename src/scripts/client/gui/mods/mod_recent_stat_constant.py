@@ -6,7 +6,7 @@ COLUMN_ID_NOT_FOUND = -1
 MAX_ITERATIONS = 1000
 
 
-class STAT_PROVIDER:
+class STAT_PROVIDER(object):
     NOOBMETER = "noobmeter"
     KTTC = "kttc"
 

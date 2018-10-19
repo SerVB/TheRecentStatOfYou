@@ -1,94 +1,89 @@
 # -*- coding: utf-8 -*-
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
-import traceback
-
 from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN, COLUMN_ID_NOT_FOUND, MAX_ITERATIONS
-from mod_recent_stat_logging import logInfo, logError
+from mod_recent_stat_logging import logInfo
 from mod_recent_stat_network import getFormattedHtmlText, getNextRowCells, getNumberFromCell
+from mod_recent_stat_provider import StatProvider
 
 
-def getPlayerId(idSiteText, nickname):
-    try:
+class Noobmeter(StatProvider):
+    @staticmethod
+    def _getPlayerId(idSiteText, nickname):
         nameTitle = "<h1>%s</h1>" % nickname
         nameTitleEndIndex = idSiteText.find(nameTitle) + len(nameTitle)
         idStartIndex = idSiteText.find("<!--", nameTitleEndIndex) + len("<!--")
         idEndIndex = idSiteText.find("-->", idStartIndex) - 1
         return int(idSiteText[idStartIndex:idEndIndex].strip())
-    except BaseException:
-        logError("Can't get id from text", traceback.format_exc())
-        return PLAYER_ID_NOT_KNOWN
 
+    @staticmethod
+    def _getStatTableBeginIdx(siteText):
+        iterations = 0
 
-def _getStatTableBeginIdx(siteText):
-    iterations = 0
+        tableBeginIdx = 0
+        while True:
+            tableBeginIdx = siteText.find("<table", tableBeginIdx + 1)
+            classBeginIdx = siteText.find("tablesorter", tableBeginIdx)
+            endTableBeginIdx = siteText.find(">", tableBeginIdx)
+            if classBeginIdx < endTableBeginIdx:
+                break
 
-    tableBeginIdx = 0
-    while True:
-        tableBeginIdx = siteText.find("<table", tableBeginIdx + 1)
-        classBeginIdx = siteText.find("tablesorter", tableBeginIdx)
-        endTableBeginIdx = siteText.find(">", tableBeginIdx)
-        if classBeginIdx < endTableBeginIdx:
-            break
+            assert iterations < MAX_ITERATIONS, "Too many iterations: %s" % iterations
+            iterations += 1
 
-        assert iterations < MAX_ITERATIONS, "Too many iterations: %s" % iterations
-        iterations += 1
+        return tableBeginIdx
 
-    return tableBeginIdx
+    @staticmethod
+    def _getOverallAndRecentColumnIdx(siteText, tableBeginIdx):
+        ths = getNextRowCells(siteText, tableBeginIdx, "th")
 
+        overallColumnIdx = COLUMN_ID_NOT_FOUND
+        recentColumnIdx = COLUMN_ID_NOT_FOUND
 
-def _getOverallAndRecentColumnIdx(siteText, tableBeginIdx):
-    ths = getNextRowCells(siteText, tableBeginIdx, "th")
+        for i, th in reversed(tuple(enumerate(ths))):
+            if "Общий" in th or "Overall" in th:
+                overallColumnIdx = i
+            if "~1000" in th or "~1,000" in th:
+                recentColumnIdx = i
 
-    overallColumnIdx = COLUMN_ID_NOT_FOUND
-    recentColumnIdx = COLUMN_ID_NOT_FOUND
+        assert overallColumnIdx != COLUMN_ID_NOT_FOUND, "No overall column found in %s" % ths
 
-    for i, th in reversed(tuple(enumerate(ths))):
-        if "Общий" in th or "Overall" in th:
-            overallColumnIdx = i
-        if "~1000" in th or "~1,000" in th:
-            recentColumnIdx = i
+        return overallColumnIdx, recentColumnIdx
 
-    assert overallColumnIdx != COLUMN_ID_NOT_FOUND, "No overall column found in %s" % ths
+    @staticmethod
+    def _getTrsWithData(siteText, tableBeginIdx):
+        iterations = 0
 
-    return overallColumnIdx, recentColumnIdx
+        headerEndIdx = siteText.find("</tr>", tableBeginIdx)
+        tableEndIdx = siteText.find("</table>", headerEndIdx)
+        nextTrBeginIdx = headerEndIdx
 
+        trs = list()
 
-def _getTrsWithData(siteText, tableBeginIdx):
-    iterations = 0
+        while nextTrBeginIdx != -1 and nextTrBeginIdx < tableEndIdx:
+            nowTrBeginIdx = nextTrBeginIdx
 
-    headerEndIdx = siteText.find("</tr>", tableBeginIdx)
-    tableEndIdx = siteText.find("</table>", headerEndIdx)
-    nextTrBeginIdx = headerEndIdx
+            tds = getNextRowCells(siteText, nowTrBeginIdx)
+            trs.append(tds)
 
-    trs = list()
+            nextTrBeginIdx = siteText.find("<tr", nowTrBeginIdx + 1)
 
-    while nextTrBeginIdx != -1 and nextTrBeginIdx < tableEndIdx:
-        nowTrBeginIdx = nextTrBeginIdx
+            assert iterations < MAX_ITERATIONS, "Too many iterations: %s" % iterations
+            iterations += 1
 
-        tds = getNextRowCells(siteText, nowTrBeginIdx)
-        trs.append(tds)
+        return trs
 
-        nextTrBeginIdx = siteText.find("<tr", nowTrBeginIdx + 1)
+    def _getStatistics(self, region, nickname, playerId):
+        if playerId == PLAYER_ID_NOT_KNOWN:
+            idSiteText = getFormattedHtmlText("http://www.noobmeter.com/player/%s/%s" % (region, nickname))
+            playerId = self._getPlayerId(idSiteText, nickname)
+            logInfo("Player ID of %s = %s" % (nickname, playerId))
 
-        assert iterations < MAX_ITERATIONS, "Too many iterations: %s" % iterations
-        iterations += 1
+        siteText = getFormattedHtmlText("http://www.noobmeter.com/player/%s/%s/%d" % (region, nickname, playerId))
 
-    return trs
-
-
-def getStatistics(region, nickname, playerId):
-    if playerId == PLAYER_ID_NOT_KNOWN:
-        idSiteText = getFormattedHtmlText("http://www.noobmeter.com/player/%s/%s" % (region, nickname))
-        playerId = getPlayerId(idSiteText, nickname)
-        logInfo("Player ID of %s = %s" % (nickname, playerId))
-
-    siteText = getFormattedHtmlText("http://www.noobmeter.com/player/%s/%s/%d" % (region, nickname, playerId))
-
-    try:
-        tableBeginIdx = _getStatTableBeginIdx(siteText)
-        overallColumnIdx, recentColumnIdx = _getOverallAndRecentColumnIdx(siteText, tableBeginIdx)
-        trs = _getTrsWithData(siteText, tableBeginIdx)
+        tableBeginIdx = self._getStatTableBeginIdx(siteText)
+        overallColumnIdx, recentColumnIdx = self._getOverallAndRecentColumnIdx(siteText, tableBeginIdx)
+        trs = self._getTrsWithData(siteText, tableBeginIdx)
 
         wn8 = ""
         battlesRecent = None
@@ -118,6 +113,3 @@ def getStatistics(region, nickname, playerId):
         playerStat += str(int(round(int(battlesOverall) / 1000.0))) + "k]"
 
         return playerStat
-    except BaseException:
-        logError("Error in getStatistics(%s, %s, %s)" % (region, nickname, playerId), traceback.format_exc())
-        return "[?-?]"
