@@ -1,13 +1,19 @@
 # -*- coding: utf-8 -*-
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
-import traceback
 
-
-def getSiteText(url):
+def getRawSiteText(url):
     import urllib2
     html = urllib2.urlopen(url=url).read().replace("&nbsp;", " ").replace('"', "'")
     return html
+
+
+def getFormattedHtmlText(url):
+    return getRawSiteText(url).replace("&nbsp;", " ").replace('"', "'")
+
+
+def getJsonText(url):
+    return getRawSiteText(url).replace("'", '"')
 
 
 def getNextRowCells(string, idx, td="td"):

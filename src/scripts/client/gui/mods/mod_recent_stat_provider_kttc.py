@@ -6,7 +6,7 @@ import json
 
 from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN
 from mod_recent_stat_logging import logInfo, logError
-from mod_recent_stat_network import getSiteText
+from mod_recent_stat_network import getRawSiteText, getFormattedHtmlText, getJsonText
 
 
 def _getStatTable(mainSiteText):
@@ -51,20 +51,20 @@ def _getPlayerId(mainSiteText):
 def getStatistics(region, nickname, playerId):
     try:
         if playerId == PLAYER_ID_NOT_KNOWN:
-            mainSiteText = getSiteText("https://kttc.ru/wot/%s/user/%s/" % (region, nickname))
+            mainSiteText = getFormattedHtmlText("https://kttc.ru/wot/%s/user/%s/" % (region, nickname))
             playerId = _getPlayerId(mainSiteText)
             logInfo("Player ID of %s = %s" % (nickname, playerId))
 
-        _updateStatus = getSiteText("https://kttc.ru/wot/%s/statistics/user/update/%s/" % (region, playerId))
+        _updateStatus = getRawSiteText("https://kttc.ru/wot/%s/statistics/user/update/%s/" % (region, playerId))
 
-        overallJson = json.loads(getSiteText("https://kttc.ru/wot/%s/user/%s/get-user-json/%s/" % (region, nickname, playerId)).replace("'", '"'))
+        overallJson = json.loads(getJsonText("https://kttc.ru/wot/%s/user/%s/get-user-json/%s/" % (region, nickname, playerId)))
         assert overallJson["success"], "Overall json isn't successful: %s" % overallJson
 
         wn8 = overallJson["data"]["wn8"]
         battlesOverall = overallJson["data"]["currentBattles"]
         battlesRecent = None
 
-        recentStatJson = json.loads(getSiteText("https://kttc.ru/wot/ru/user/%s/get-by-battles/%s/" % (nickname, playerId)).replace("'", '"'))
+        recentStatJson = json.loads(getJsonText("https://kttc.ru/wot/ru/user/%s/get-by-battles/%s/" % (nickname, playerId)))
         if recentStatJson["success"] and "1000" in recentStatJson["data"]:
             battlesRecent = recentStatJson["data"]["1000"]["BT"]
             if battlesRecent == 0:  # Filter not valid recent stats

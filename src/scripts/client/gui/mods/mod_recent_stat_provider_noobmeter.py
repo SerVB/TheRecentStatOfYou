@@ -5,7 +5,7 @@ import traceback
 
 from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN, COLUMN_ID_NOT_FOUND, MAX_ITERATIONS
 from mod_recent_stat_logging import logInfo, logError
-from mod_recent_stat_network import getSiteText, getNextRowCells, getNumberFromCell
+from mod_recent_stat_network import getFormattedHtmlText, getNextRowCells, getNumberFromCell
 
 
 def getPlayerId(idSiteText, nickname):
@@ -79,11 +79,11 @@ def _getTrsWithData(siteText, tableBeginIdx):
 
 def getStatistics(region, nickname, playerId):
     if playerId == PLAYER_ID_NOT_KNOWN:
-        idSiteText = getSiteText("http://www.noobmeter.com/player/%s/%s" % (region, nickname))
+        idSiteText = getFormattedHtmlText("http://www.noobmeter.com/player/%s/%s" % (region, nickname))
         playerId = getPlayerId(idSiteText, nickname)
         logInfo("Player ID of %s = %s" % (nickname, playerId))
 
-    siteText = getSiteText("http://www.noobmeter.com/player/%s/%s/%d" % (region, nickname, playerId))
+    siteText = getFormattedHtmlText("http://www.noobmeter.com/player/%s/%s/%d" % (region, nickname, playerId))
 
     try:
         tableBeginIdx = _getStatTableBeginIdx(siteText)
