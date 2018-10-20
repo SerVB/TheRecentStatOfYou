@@ -2,9 +2,10 @@
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
 import json
+import traceback
 
 from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN
-from mod_recent_stat_logging import logInfo
+from mod_recent_stat_logging import logInfo, logError
 from mod_recent_stat_network import getRawSiteText, getFormattedHtmlText, getJsonText
 from mod_recent_stat_provider import StatProvider
 
@@ -29,13 +30,20 @@ class Kttc(StatProvider):
         answer = int(mainSiteText[startIdx:endIdx])
         return int(answer)
 
+    @staticmethod
+    def _tryUpdateStatOnKttc(region, playerId):
+        try:
+            _updateStatus = getRawSiteText("https://kttc.ru/wot/%s/statistics/user/update/%s/" % (region, playerId))
+        except BaseException:
+            logError("Can't update status of %s %s" % (region, playerId), traceback.format_exc())
+
     def _getStatistics(self, region, nickname, playerId):
         if playerId == PLAYER_ID_NOT_KNOWN:
             mainSiteText = getFormattedHtmlText("https://kttc.ru/wot/%s/user/%s/" % (region, nickname))
             playerId = self._getPlayerId(mainSiteText)
             logInfo("Player ID of %s = %s" % (nickname, playerId))
 
-        _updateStatus = getRawSiteText("https://kttc.ru/wot/%s/statistics/user/update/%s/" % (region, playerId))
+        self._tryUpdateStatOnKttc(region, playerId)
 
         overallJson = json.loads(getJsonText("https://kttc.ru/wot/%s/user/%s/get-user-json/%s/" % (region, nickname, playerId)))
         assert overallJson["success"], "Overall json isn't successful: %s" % overallJson
