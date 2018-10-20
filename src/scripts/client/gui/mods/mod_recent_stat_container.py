@@ -2,10 +2,17 @@
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
 import traceback
+import string
 
 from mod_recent_stat_config import REGION_SETTING, PROVIDER, NAME_FORMAT_NO_RECENT, NAME_FORMAT_RECENT, NO_PLAYER_INFO_BECAUSE_WAS_NOT_LOADED, NO_PLAYER_INFO_BECAUSE_OF_PROVIDER
 from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN, STAT_FIELDS
 from mod_recent_stat_logging import logInfo, logError
+
+
+class SafeDict(dict):
+    def __missing__(self, key):
+        return "{" + key + "}"
+
 
 _formatted = dict()  # {playerName: formattedPlayerName}
 
@@ -19,10 +26,9 @@ def _formatPlayerData(playerData):
         playerData[STAT_FIELDS.OVERALL_BATTLES] = _formatBattles(playerData[STAT_FIELDS.OVERALL_BATTLES])
 
     if playerData.get(STAT_FIELDS.RECENT_WN8, None) is None or playerData.get(STAT_FIELDS.RECENT_BATTLES, None) is None:
-        formatted = NAME_FORMAT_NO_RECENT.format(**playerData)
+        formatted = string.Formatter().vformat(NAME_FORMAT_NO_RECENT, (), SafeDict(**playerData))
     else:
-        formatted = NAME_FORMAT_RECENT.format(**playerData)
-
+        formatted = string.Formatter().vformat(NAME_FORMAT_RECENT, (), SafeDict(**playerData))
     if "{" in formatted:
         return NO_PLAYER_INFO_BECAUSE_OF_PROVIDER
     else:
