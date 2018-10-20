@@ -3,7 +3,7 @@
 
 import traceback
 
-from mod_recent_stat_config import REGION_SETTING, PROVIDER, NAME_FORMAT_NO_RECENT, NAME_FORMAT_RECENT
+from mod_recent_stat_config import REGION_SETTING, PROVIDER, NAME_FORMAT_NO_RECENT, NAME_FORMAT_RECENT, NO_PLAYER_INFO_BECAUSE_WAS_NOT_LOADED, NO_PLAYER_INFO_BECAUSE_OF_PROVIDER
 from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN, STAT_FIELDS
 from mod_recent_stat_logging import logInfo, logError
 
@@ -24,7 +24,7 @@ def _formatPlayerData(playerData):
         formatted = NAME_FORMAT_RECENT.format(**playerData)
 
     if "{" in formatted:
-        return "[?-?]"
+        return NO_PLAYER_INFO_BECAUSE_OF_PROVIDER
     else:
         return formatted
 
@@ -36,7 +36,7 @@ def _updatePlayerName(playerName, playerId):
 
 
 def formattedPlayerName(playerName):
-    return _formatted.get(playerName, "[?]" + playerName)
+    return _formatted.get(playerName, NO_PLAYER_INFO_BECAUSE_WAS_NOT_LOADED + playerName)
 
 
 def updatePlayerFormatByVehicleList(vehicles, forced=False):
