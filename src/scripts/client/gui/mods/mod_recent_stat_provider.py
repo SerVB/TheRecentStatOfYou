@@ -15,7 +15,7 @@ class StatProvider:
             return self._getStatistics(region, nickname, playerId)
         except BaseException:
             logError("Error in getStatistics(%s, %s, %s)" % (region, nickname, playerId), traceback.format_exc())
-            return "[?-?]"
+            return dict()
 
     @abstractmethod
     def _getStatistics(self, region, nickname, playerId):

@@ -11,3 +11,10 @@ class STAT_PROVIDER(object):
     KTTC = "kttc"
 
     SUPPORTED = (NOOBMETER, KTTC)
+
+
+class STAT_FIELDS(object):
+    RECENT_BATTLES = "recentBattles"
+    RECENT_WN8 = "recentWn8"
+    OVERALL_BATTLES = "overallBattles"
+    OVERALL_WN8 = "overallWn8"

@@ -3,16 +3,35 @@
 
 import traceback
 
-from mod_recent_stat_config import REGION_SETTING, PROVIDER
-from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN
+from mod_recent_stat_config import REGION_SETTING, PROVIDER, NAME_FORMAT_NO_RECENT, NAME_FORMAT_RECENT
+from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN, STAT_FIELDS
 from mod_recent_stat_logging import logInfo, logError
 
 _formatted = dict()  # {playerName: formattedPlayerName}
 
 
+def _formatBattles(strBattles):
+    return str(int(round(int(strBattles) / 1000.0))) + "k"
+
+
+def _formatPlayerData(playerData):
+    if playerData.get(STAT_FIELDS.OVERALL_BATTLES, None) is not None:
+        playerData[STAT_FIELDS.OVERALL_BATTLES] = _formatBattles(playerData[STAT_FIELDS.OVERALL_BATTLES])
+
+    if playerData.get(STAT_FIELDS.RECENT_WN8, None) is None or playerData.get(STAT_FIELDS.RECENT_BATTLES, None) is None:
+        formatted = NAME_FORMAT_NO_RECENT.format(**playerData)
+    else:
+        formatted = NAME_FORMAT_RECENT.format(**playerData)
+
+    if "{" in formatted:
+        return "[?-?]"
+    else:
+        return formatted
+
+
 def _updatePlayerName(playerName, playerId):
-    playerStat = PROVIDER.getStatistics(REGION_SETTING, playerName, playerId)
-    newName = playerStat + playerName
+    playerData = PROVIDER.getStatistics(REGION_SETTING, playerName, playerId)
+    newName = _formatPlayerData(playerData) + playerName
     _formatted[playerName] = newName
 
 

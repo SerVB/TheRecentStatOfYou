@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
-from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN, COLUMN_ID_NOT_FOUND, MAX_ITERATIONS
+from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN, COLUMN_ID_NOT_FOUND, MAX_ITERATIONS, STAT_FIELDS
 from mod_recent_stat_logging import logInfo
 from mod_recent_stat_network import getFormattedHtmlText, getNextRowCells, getNumberFromCell
 from mod_recent_stat_provider import StatProvider
@@ -85,31 +85,27 @@ class Noobmeter(StatProvider):
         overallColumnIdx, recentColumnIdx = self._getOverallAndRecentColumnIdx(siteText, tableBeginIdx)
         trs = self._getTrsWithData(siteText, tableBeginIdx)
 
-        wn8 = ""
-        battlesRecent = None
-        battlesOverall = ""
+        playerData = {
+            STAT_FIELDS.RECENT_BATTLES: None,
+            STAT_FIELDS.RECENT_WN8: None,
+            STAT_FIELDS.OVERALL_BATTLES: None,
+            STAT_FIELDS.OVERALL_WN8: None
+        }
 
         for tds in trs:
             if len(tds) != 0:
                 loweredRowTitle = tds[0].lower()
 
                 if "wn8" in loweredRowTitle:
-                    if recentColumnIdx != -1:
-                        wn8ParsedStr = getNumberFromCell(tds[recentColumnIdx])
-                    else:
-                        wn8ParsedStr = getNumberFromCell(tds[overallColumnIdx])
+                    if recentColumnIdx != COLUMN_ID_NOT_FOUND:
+                        playerData[STAT_FIELDS.RECENT_WN8] = getNumberFromCell(tds[recentColumnIdx])
 
-                    if wn8ParsedStr is not None:
-                        wn8 = wn8ParsedStr
+                    playerData[STAT_FIELDS.OVERALL_WN8] = getNumberFromCell(tds[overallColumnIdx])
                 elif "battles:" in loweredRowTitle or "кол. боёв:" in loweredRowTitle:
-                    if recentColumnIdx != -1:
-                        battlesRecent = getNumberFromCell(tds[recentColumnIdx])
+                    if recentColumnIdx != COLUMN_ID_NOT_FOUND:
+                        playerData[STAT_FIELDS.RECENT_BATTLES] = getNumberFromCell(tds[recentColumnIdx])
 
-                    battlesOverall = getNumberFromCell(tds[overallColumnIdx])
+                    playerData[STAT_FIELDS.OVERALL_BATTLES] = getNumberFromCell(tds[overallColumnIdx])
 
-        playerStat = wn8 + "["
-        if battlesRecent is not None:
-            playerStat += battlesRecent + "/"
-        playerStat += str(int(round(int(battlesOverall) / 1000.0))) + "k]"
+        return playerData
 
-        return playerStat
