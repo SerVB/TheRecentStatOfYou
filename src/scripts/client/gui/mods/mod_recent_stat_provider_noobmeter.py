@@ -75,11 +75,11 @@ class Noobmeter(StatProvider):
 
     def _getStatistics(self, region, nickname, playerId):
         if playerId == PLAYER_ID_NOT_KNOWN:
-            idSiteText = getFormattedHtmlText("http://www.noobmeter.com/player/%s/%s" % (region, nickname))
+            idSiteText = getFormattedHtmlText("https://www.noobmeter.com/player/%s/%s" % (region, nickname))
             playerId = self._getPlayerId(idSiteText, nickname)
             logInfo("Player ID of %s = %s" % (nickname, playerId))
 
-        siteText = getFormattedHtmlText("http://www.noobmeter.com/player/%s/%s/%d" % (region, nickname, playerId))
+        siteText = getFormattedHtmlText("https://www.noobmeter.com/player/%s/%s/%d" % (region, nickname, playerId))
 
         tableBeginIdx = self._getStatTableBeginIdx(siteText)
         overallColumnIdx, recentColumnIdx = self._getOverallAndRecentColumnIdx(siteText, tableBeginIdx)
