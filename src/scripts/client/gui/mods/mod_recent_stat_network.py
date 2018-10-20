@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
+from mod_recent_stat_string import removeTags
+
 
 def getRawSiteText(url):
     import urllib2
@@ -40,21 +42,6 @@ def getNextRowCells(string, idx, td="td"):
             answer.append(string[nowTdBeginIdx:nowTdEndIdx])
 
         nowTdIdx = string.find(cellBegin, nowTdEndIdx)
-
-    return answer
-
-
-def removeTags(text):
-    add = True
-    answer = ""
-
-    for c in text:
-        if c == "<":
-            add = False
-        elif c == ">":
-            add = True
-        elif add:
-            answer += c
 
     return answer
 
