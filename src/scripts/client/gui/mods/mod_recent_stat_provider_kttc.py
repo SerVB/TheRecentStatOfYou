@@ -46,7 +46,7 @@ class Kttc(StatProvider):
             STAT_FIELDS.OVERALL_WN8: overallJson["data"]["wn8"]
         }
 
-        recentStatJson = json.loads(getJsonText("https://kttc.ru/wot/ru/user/%s/get-by-battles/%s/" % (nickname, playerId)))
+        recentStatJson = json.loads(getJsonText("https://kttc.ru/wot/%s/user/%s/get-by-battles/%s/" % (region, nickname, playerId)))
         if recentStatJson["success"] and "1000" in recentStatJson["data"]:
             if recentStatJson["data"]["1000"]["BT"] != 0:  # Filter not valid recent stats
                 playerData[STAT_FIELDS.RECENT_BATTLES] = str(recentStatJson["data"]["1000"]["BT"])
