@@ -1,12 +1,27 @@
 # -*- coding: utf-8 -*-
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
+import random
+from urllib2 import urlopen, Request
+
 from mod_recent_stat_string import removeTags
 
 
+def generateUserAgent():
+    firefox = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:{0}.0) Gecko/20100101 Firefox/{0}.0"
+    firefoxVersion = random.randint(61, 62)
+    userAgent = firefox.format(firefoxVersion)
+    return userAgent
+
+
+def generateHeaders():
+    headers = {"User-Agent": generateUserAgent()}
+    return headers
+
+
 def getRawSiteText(url):
-    import urllib2
-    html = urllib2.urlopen(url=url).read().replace("&nbsp;", " ").replace('"', "'")
+    req = Request(url, headers=generateHeaders())
+    html = urlopen(req).read()
     return html
 
 
