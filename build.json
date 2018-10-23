@@ -1,6 +1,6 @@
 {
   "packageName": "io.github.servb.recent_stat",
-  "modVersion": 4,
+  "modVersion": 5,
   "wotVersion": "1.2.0.1",
   "buildRoot": "./build/",
   "sourcesRoot": "./src/",
