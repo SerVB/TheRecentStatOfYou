@@ -13,6 +13,7 @@ from mod_recent_stat_provider import StatProvider
 class Kttc(StatProvider):
     @staticmethod
     def _getPlayerId(mainSiteText):
+        # type: (str) -> int
         methodCallBeginIdx = mainSiteText.find("kttc.account.init(")
         assert methodCallBeginIdx != -1, "No method call found"
 
@@ -31,6 +32,7 @@ class Kttc(StatProvider):
         return int(answer)
 
     def _getStatistics(self, region, nickname, playerId):
+        # type: (str, str, str) -> dict
         if playerId == PLAYER_ID_NOT_KNOWN:
             mainSiteText = getFormattedHtmlText("https://kttc.ru/wot/%s/user/%s/" % (region, nickname))
             playerId = self._getPlayerId(mainSiteText)

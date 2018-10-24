@@ -17,11 +17,13 @@ class SafeDict(dict):
 _formatted = dict()  # {playerName: formattedPlayerName}
 
 
-def _formatBattles(strBattles):
-    return str(int(round(int(strBattles) / 1000.0))) + "k"
+def _formatBattles(battles):
+    # type: (str) -> str
+    return str(int(round(int(battles) / 1000.0))) + "k"
 
 
 def _formatPlayerData(playerData):
+    # type: (dict) -> str
     if playerData.get(STAT_FIELDS.OVERALL_BATTLES, None) is not None:
         playerData[STAT_FIELDS.OVERALL_BATTLES] = _formatBattles(playerData[STAT_FIELDS.OVERALL_BATTLES])
 
@@ -36,16 +38,19 @@ def _formatPlayerData(playerData):
 
 
 def _updatePlayerName(playerName, playerId):
+    # type: (str, str) -> None
     playerData = PROVIDER.getStatistics(REGION_SETTING, playerName, playerId)
     newName = _formatPlayerData(playerData) + playerName
     _formatted[playerName] = newName
 
 
 def formattedPlayerName(playerName):
+    # type: (str) -> str
     return _formatted.get(playerName, NO_PLAYER_INFO_BECAUSE_WAS_NOT_LOADED + playerName)
 
 
 def updatePlayerFormatByVehicleList(vehicles, forced=False):
+    # type: (dict, bool) -> None
     try:
         from threading import Thread
 

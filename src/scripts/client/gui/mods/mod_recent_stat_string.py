@@ -3,6 +3,7 @@
 
 
 def removeSubstringsByBeginAndEnd(string, begin, end):
+    # type: (str, str, str) -> str
     answer = ""
 
     nextStart = 0
@@ -25,4 +26,5 @@ def removeSubstringsByBeginAndEnd(string, begin, end):
 
 
 def removeTags(text):
+    # type: (str) -> str
     return removeSubstringsByBeginAndEnd(text, "<", ">")

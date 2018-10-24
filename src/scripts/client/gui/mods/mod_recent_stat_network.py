@@ -8,6 +8,7 @@ from mod_recent_stat_string import removeTags
 
 
 def generateUserAgent():
+    # type: () -> str
     firefox = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:{0}.0) Gecko/20100101 Firefox/{0}.0"
     firefoxVersion = random.randint(61, 62)
     userAgent = firefox.format(firefoxVersion)
@@ -15,25 +16,30 @@ def generateUserAgent():
 
 
 def generateHeaders():
+    # type: () -> dict
     headers = {"User-Agent": generateUserAgent()}
     return headers
 
 
 def getRawSiteText(url):
+    # type: (str) -> str
     req = Request(url, headers=generateHeaders())
     html = urlopen(req).read()
     return html
 
 
 def getFormattedHtmlText(url):
+    # type: (str) -> str
     return getRawSiteText(url).replace("&nbsp;", " ").replace('"', "'")
 
 
 def getJsonText(url):
+    # type: (str) -> str
     return getRawSiteText(url).replace("'", '"')
 
 
 def getNextRowCells(string, idx, td="td"):
+    # type: (str, int, str) -> list
     cellBegin = "<%s" % td
     cellEnd = "</%s>" % td
 
@@ -63,6 +69,7 @@ def getNextRowCells(string, idx, td="td"):
 
 # Returns str of number in <td>...</td> or None if not found
 def getNumberFromCell(tdText):
+    # type: (str) -> [None, str]
     split = removeTags(tdText).replace(",", " ").split()
 
     data = None

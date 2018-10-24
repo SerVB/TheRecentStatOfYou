@@ -10,6 +10,7 @@ from mod_recent_stat_provider import StatProvider
 class Noobmeter(StatProvider):
     @staticmethod
     def _getPlayerId(idSiteText, nickname):
+        # type: (str, str) -> int
         nameTitle = "<h1>%s</h1>" % nickname
         nameTitleEndIndex = idSiteText.find(nameTitle) + len(nameTitle)
         idStartIndex = idSiteText.find("<!--", nameTitleEndIndex) + len("<!--")
@@ -18,6 +19,7 @@ class Noobmeter(StatProvider):
 
     @staticmethod
     def _getStatTableBeginIdx(siteText):
+        # type: (str) -> int
         iterations = 0
 
         tableBeginIdx = 0
@@ -35,6 +37,7 @@ class Noobmeter(StatProvider):
 
     @staticmethod
     def _getOverallAndRecentColumnIdx(siteText, tableBeginIdx):
+        # type: (str, int) -> (int, int)
         ths = getNextRowCells(siteText, tableBeginIdx, "th")
 
         overallColumnIdx = COLUMN_ID_NOT_FOUND
@@ -52,6 +55,7 @@ class Noobmeter(StatProvider):
 
     @staticmethod
     def _getTrsWithData(siteText, tableBeginIdx):
+        # type: (str, int) -> list
         iterations = 0
 
         headerEndIdx = siteText.find("</tr>", tableBeginIdx)
@@ -74,6 +78,7 @@ class Noobmeter(StatProvider):
         return trs
 
     def _getStatistics(self, region, nickname, playerId):
+        # type: (str, str, str) -> dict
         if playerId == PLAYER_ID_NOT_KNOWN:
             idSiteText = getFormattedHtmlText("https://www.noobmeter.com/player/%s/%s" % (region, nickname))
             playerId = self._getPlayerId(idSiteText, nickname)
