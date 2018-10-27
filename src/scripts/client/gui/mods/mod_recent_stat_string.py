@@ -25,6 +25,11 @@ def removeSubstringsByBeginAndEnd(string, begin, end):
     return answer
 
 
-def removeTags(text):
+def removeTags(htmlText):
     # type: (str) -> str
-    return removeSubstringsByBeginAndEnd(text, "<", ">")
+    return removeSubstringsByBeginAndEnd(htmlText, "<", ">")
+
+
+def removeComments(jsonText):
+    # type: (str) -> str
+    return removeSubstringsByBeginAndEnd(jsonText, "/*", "*/")
