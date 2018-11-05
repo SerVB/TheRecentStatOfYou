@@ -1,0 +1,4 @@
+6bcfe604e2408e210eb25510a1f6eeaa
+
+For stability create your own application at https://developers.wargaming.net/ and replace first line of this file with your application ID.
+Для стабильности работы создайте свое собственное приложение на сайте https://developers.wargaming.net/ и замените первую строчку этого файла на полученный ID код.

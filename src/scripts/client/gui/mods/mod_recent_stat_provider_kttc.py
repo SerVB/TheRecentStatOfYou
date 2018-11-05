@@ -38,20 +38,15 @@ class Kttc(StatProvider):
             playerId = self._getPlayerId(mainSiteText)
             logInfo("Player ID of %s = %s" % (nickname, playerId))
 
-        overallJson = json.loads(getJsonText("https://kttc.ru/wot/%s/user/%s/get-user-json/%s/" % (region, nickname, playerId)))
-        assert overallJson["success"], "Overall json isn't successful: %s" % overallJson
-
         playerData = {
-            STAT_FIELDS.RECENT_BATTLES: None,
-            STAT_FIELDS.RECENT_WN8: None,
-            STAT_FIELDS.OVERALL_BATTLES: overallJson["data"]["currentBattles"],
-            STAT_FIELDS.OVERALL_WN8: overallJson["data"]["wn8"]
+            STAT_FIELDS.KILO_BATTLES: None,
+            STAT_FIELDS.WN8: None
         }
 
         recentStatJson = json.loads(getJsonText("https://kttc.ru/wot/%s/user/%s/get-by-battles/%s/" % (region, nickname, playerId)))
         if recentStatJson["success"] and "1000" in recentStatJson["data"]:
             if recentStatJson["data"]["1000"]["BT"] != 0:  # Filter not valid recent stats
-                playerData[STAT_FIELDS.RECENT_BATTLES] = str(recentStatJson["data"]["1000"]["BT"])
-                playerData[STAT_FIELDS.RECENT_WN8] = str(int(round(recentStatJson["data"]["1000"]["WN8"])))
+                playerData[STAT_FIELDS.KILO_BATTLES] = str(recentStatJson["data"]["1000"]["BT"])
+                playerData[STAT_FIELDS.WN8] = str(int(round(recentStatJson["data"]["1000"]["WN8"])))  # TODO
 
         return playerData

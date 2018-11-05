@@ -14,7 +14,15 @@ class STAT_PROVIDER(object):
 
 
 class STAT_FIELDS(object):
-    RECENT_BATTLES = "recentBattles"
-    RECENT_WN8 = "recentWn8"
-    OVERALL_BATTLES = "overallBattles"
-    OVERALL_WN8 = "overallWn8"
+    WN8 = "wn8"
+    KILO_BATTLES = "kb"
+
+
+class CONFIG_MAIN(object):
+    REGION = "region"
+    TIMEOUT = "timeout"
+
+
+class CONFIG_FORMAT(object):
+    PLAYER_NAME = "playerName"
+    NO_INFO = "noInfo"

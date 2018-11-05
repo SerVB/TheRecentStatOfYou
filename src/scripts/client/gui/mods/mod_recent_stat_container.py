@@ -1,12 +1,24 @@
 # -*- coding: utf-8 -*-
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
-import traceback
 import string
+import traceback
 
-from mod_recent_stat_config import REGION_SETTING, PROVIDER, NAME_FORMAT_NO_RECENT, NAME_FORMAT_RECENT, NO_PLAYER_INFO_BECAUSE_WAS_NOT_LOADED, NO_PLAYER_INFO_BECAUSE_OF_PROVIDER
+from mod_recent_stat_config import PROVIDER
+from mod_recent_stat_config_format import ConfigFormat
+from mod_recent_stat_config_main import ConfigMain
 from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN, STAT_FIELDS
+from mod_recent_stat_converter import formatBattlesToKiloBattles
 from mod_recent_stat_logging import logInfo, logError
+
+
+class PlayerData(object):
+    battles = None  # type: [int, None]
+    kb = None  # type: [int, None]
+    wn8 = None  # type: [int, None]
+    xwn8 = None  # type: [int, None]
+
+    hasRecentStat = False  # type: bool
 
 
 class SafeDict(dict):
@@ -17,36 +29,31 @@ class SafeDict(dict):
 _formatted = dict()  # {playerName: formattedPlayerName}
 
 
-def _formatBattles(battles):
-    # type: (str) -> str
-    return str(int(round(int(battles) / 1000.0))) + "k"
+def _formatPlayerData(playerData, configFormat):
+    # type: (dict, ConfigFormat) -> str
+    if playerData.get(STAT_FIELDS.KILO_BATTLES, None) is not None:
+        playerData[STAT_FIELDS.KILO_BATTLES] = formatBattlesToKiloBattles(playerData[STAT_FIELDS.KILO_BATTLES])
 
-
-def _formatPlayerData(playerData):
-    # type: (dict) -> str
-    if playerData.get(STAT_FIELDS.OVERALL_BATTLES, None) is not None:
-        playerData[STAT_FIELDS.OVERALL_BATTLES] = _formatBattles(playerData[STAT_FIELDS.OVERALL_BATTLES])
-
-    if playerData.get(STAT_FIELDS.RECENT_WN8, None) is None or playerData.get(STAT_FIELDS.RECENT_BATTLES, None) is None:
-        formatted = string.Formatter().vformat(NAME_FORMAT_NO_RECENT, (), SafeDict(**playerData))
+    if playerData.get(STAT_FIELDS.WN8, None) is None or playerData.get(STAT_FIELDS.KILO_BATTLES, None) is None:
+        formatted = string.Formatter().vformat(configFormat.playerName, (), SafeDict(**playerData))
     else:
-        formatted = string.Formatter().vformat(NAME_FORMAT_RECENT, (), SafeDict(**playerData))
+        formatted = string.Formatter().vformat(configFormat.playerName, (), SafeDict(**playerData))
     if "{" in formatted:
-        return NO_PLAYER_INFO_BECAUSE_OF_PROVIDER
+        return configFormat.noInfo
     else:
         return formatted
 
 
-def _updatePlayerName(playerName, playerId):
-    # type: (str, str) -> None
-    playerData = PROVIDER.getStatistics(REGION_SETTING, playerName, playerId)
-    newName = _formatPlayerData(playerData) + playerName
+def _updatePlayerName(playerName, playerId, configFormat, configMain):
+    # type: (str, str, ConfigFormat, ConfigMain) -> None
+    playerData = PROVIDER.getStatistics(configMain.region, playerName, playerId)
+    newName = _formatPlayerData(playerData, configFormat) + playerName
     _formatted[playerName] = newName
 
 
-def formattedPlayerName(playerName):
-    # type: (str) -> str
-    return _formatted.get(playerName, NO_PLAYER_INFO_BECAUSE_WAS_NOT_LOADED + playerName)
+def formattedPlayerName(playerName, configFormat):
+    # type: (str, ConfigFormat) -> str
+    return _formatted.get(playerName, configFormat.noInfo + playerName)
 
 
 def updatePlayerFormatByVehicleList(vehicles, forced=False):

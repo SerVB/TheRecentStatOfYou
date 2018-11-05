@@ -36,22 +36,17 @@ class Noobmeter(StatProvider):
         return tableBeginIdx
 
     @staticmethod
-    def _getOverallAndRecentColumnIdx(siteText, tableBeginIdx):
-        # type: (str, int) -> (int, int)
+    def _getRecentColumnIdx(siteText, tableBeginIdx):
+        # type: (str, int) -> int
         ths = getNextRowCells(siteText, tableBeginIdx, "th")
 
-        overallColumnIdx = COLUMN_ID_NOT_FOUND
         recentColumnIdx = COLUMN_ID_NOT_FOUND
 
         for i, th in reversed(tuple(enumerate(ths))):
-            if "Общий" in th or "Overall" in th:
-                overallColumnIdx = i
             if "~1000" in th or "~1,000" in th:
                 recentColumnIdx = i
 
-        assert overallColumnIdx != COLUMN_ID_NOT_FOUND, "No overall column found in %s" % ths
-
-        return overallColumnIdx, recentColumnIdx
+        return recentColumnIdx
 
     @staticmethod
     def _getTrsWithData(siteText, tableBeginIdx):
@@ -87,14 +82,16 @@ class Noobmeter(StatProvider):
         siteText = getFormattedHtmlText("https://www.noobmeter.com/player/%s/%s/%d" % (region, nickname, playerId))
 
         tableBeginIdx = self._getStatTableBeginIdx(siteText)
-        overallColumnIdx, recentColumnIdx = self._getOverallAndRecentColumnIdx(siteText, tableBeginIdx)
+        recentColumnIdx = self._getRecentColumnIdx(siteText, tableBeginIdx)
+
+        if recentColumnIdx == COLUMN_ID_NOT_FOUND:
+            return dict()  # TODO
+
         trs = self._getTrsWithData(siteText, tableBeginIdx)
 
         playerData = {
-            STAT_FIELDS.RECENT_BATTLES: None,
-            STAT_FIELDS.RECENT_WN8: None,
-            STAT_FIELDS.OVERALL_BATTLES: None,
-            STAT_FIELDS.OVERALL_WN8: None
+            STAT_FIELDS.KILO_BATTLES: None,
+            STAT_FIELDS.WN8: None
         }
 
         for tds in trs:
@@ -102,15 +99,9 @@ class Noobmeter(StatProvider):
                 loweredRowTitle = tds[0].lower()
 
                 if "wn8" in loweredRowTitle:
-                    if recentColumnIdx != COLUMN_ID_NOT_FOUND:
-                        playerData[STAT_FIELDS.RECENT_WN8] = getNumberFromCell(tds[recentColumnIdx])
-
-                    playerData[STAT_FIELDS.OVERALL_WN8] = getNumberFromCell(tds[overallColumnIdx])
+                    playerData[STAT_FIELDS.WN8] = getNumberFromCell(tds[recentColumnIdx])
                 elif "battles:" in loweredRowTitle or "кол. боёв:" in loweredRowTitle:
-                    if recentColumnIdx != COLUMN_ID_NOT_FOUND:
-                        playerData[STAT_FIELDS.RECENT_BATTLES] = getNumberFromCell(tds[recentColumnIdx])
-
-                    playerData[STAT_FIELDS.OVERALL_BATTLES] = getNumberFromCell(tds[overallColumnIdx])
+                    playerData[STAT_FIELDS.KILO_BATTLES] = getNumberFromCell(tds[recentColumnIdx])  # TODO
 
         return playerData
 

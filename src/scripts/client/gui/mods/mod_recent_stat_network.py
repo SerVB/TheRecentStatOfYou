@@ -6,6 +6,8 @@ from urllib2 import urlopen, Request
 
 from mod_recent_stat_string import removeTags
 
+_DEFAULT_TIMEOUT = 5
+
 
 def generateUserAgent():
     # type: () -> str
@@ -21,21 +23,21 @@ def generateHeaders():
     return headers
 
 
-def getRawSiteText(url):
-    # type: (str) -> str
+def getRawSiteText(url, timeout=_DEFAULT_TIMEOUT):
+    # type: (str, int) -> str
     req = Request(url, headers=generateHeaders())
-    html = urlopen(req).read()
+    html = urlopen(req, timeout=timeout).read()
     return html
 
 
-def getFormattedHtmlText(url):
-    # type: (str) -> str
-    return getRawSiteText(url).replace("&nbsp;", " ").replace('"', "'")
+def getFormattedHtmlText(url, timeout=_DEFAULT_TIMEOUT):
+    # type: (str, int) -> str
+    return getRawSiteText(url, timeout).replace("&nbsp;", " ").replace('"', "'")
 
 
-def getJsonText(url):
-    # type: (str) -> str
-    return getRawSiteText(url).replace("'", '"')
+def getJsonText(url, timeout=_DEFAULT_TIMEOUT):
+    # type: (str, int) -> str
+    return getRawSiteText(url, timeout).replace("'", '"')
 
 
 def getNextRowCells(string, idx, td="td"):
