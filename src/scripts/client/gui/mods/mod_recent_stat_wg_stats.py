@@ -115,6 +115,9 @@ class WgStats:
                 eWinrate += tankBattles * tankData["expWinRate"]
                 eBattles += tankBattles
 
+        if 0 in (eWinrate, eDmg, eFrags, eSpot, eDef):
+            return 0
+
         rWin = max(((winrate * eBattles / eWinrate - 0.71) / (1 - 0.71)), 0)
         rDmg = max(((avgDmg * eBattles / eDmg - 0.22) / (1 - 0.22)), 0)
         rFrag = max(min(rDmg + 0.2, ((avgFrags * eBattles / eFrags - 0.12) / (1 - 0.12))), 0)
