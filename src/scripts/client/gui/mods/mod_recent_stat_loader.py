@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
-from gui.battle_control.arena_info.arena_dp import ArenaDataProvider
-from gui.battle_control.arena_info.player_format import PlayerFullNameFormatter, PlayerFormatResult
-
 from mod_recent_stat_config_format import ConfigFormat
 from mod_recent_stat_config_main import ConfigMain
 from mod_recent_stat_config_wg_id import ConfigWgId
@@ -12,38 +9,31 @@ from mod_recent_stat_logging import logInfo
 from mod_recent_stat_wg_stats import WgStats
 
 
-logInfo("Mod loading started")
+class ModRecentStat:
+    def __init__(self, configFormat=None, configMain=None, configWgId=None):
+        # type: (ConfigFormat, ConfigMain, ConfigWgId) -> None
+        logInfo("Mod loading is started.")
 
-configFormat = ConfigFormat()
-configMain = ConfigMain()
-configWgId = ConfigWgId()
-playerIdToData = dict()
-wgStats = WgStats(configMain, configWgId, playerIdToData)
+        self._configFormat = configFormat or ConfigFormat()
+        self._configMain = configMain or ConfigMain()
+        self._configWgId = configWgId or ConfigWgId()
 
+        self._playerIdToData = dict()
+        self._wgStats = WgStats(self._configMain, self._configWgId)
 
-def buildVehiclesDataNew(self, vehicles):
-    wgStats.loadPlayerDataByVehicleList(vehicles)
-    # updatePlayerFormatByVehicleList(vehicles)
-    buildVehiclesDataOld(self, vehicles)
+        logInfo("Mod loading is finished.")
 
+    def loadPlayerDataByVehicleList(self, vehicles):
+        # type: (dict) -> None
+        self._wgStats.loadPlayerDataByVehicleList(vehicles, self._playerIdToData)
+        # updatePlayerFormatByVehicleList(vehicles)
 
-buildVehiclesDataOld = ArenaDataProvider.buildVehiclesData
-ArenaDataProvider.buildVehiclesData = buildVehiclesDataNew
+    def formatPlayerName(self, accountDBID, playerName):
+        # type: (int, str) -> str
+        playerInfo = self._playerIdToData.get(accountDBID, None)
+        if playerInfo is not None:
+            newPlayerName = str(playerInfo.xwn8) + " " + str(playerInfo.kb) + "k " + playerName
+            # newPlayerName = formattedPlayerName(playerName, configFormat)
+            return newPlayerName
 
-
-def formatNew(self, vInfoVO, playerName=None):
-    result = formatOld(self, vInfoVO, playerName)
-    accountDBID = vInfoVO.player.accountDBID
-    playerInfo = wgStats.playerIdToData.get(accountDBID, None)
-    if playerInfo is not None:
-        playerName = str(playerInfo["xwn8"]) + " " + str(playerInfo["kb"]) + "k " + result.playerName
-
-    # playerName = formattedPlayerName(result.playerName, configFormat)
-    return PlayerFormatResult(result.playerFullName, playerName, result.clanAbbrev, result.regionCode, result.vehicleName)
-
-
-formatOld = PlayerFullNameFormatter.format
-PlayerFullNameFormatter.format = formatNew
-
-
-logInfo("Mod loading finished")
+        return playerName

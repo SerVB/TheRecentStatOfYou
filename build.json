@@ -13,6 +13,7 @@
     "scripts/client/gui/mods/mod_recent_stat_constant.py",
     "scripts/client/gui/mods/mod_recent_stat_container.py",
     "scripts/client/gui/mods/mod_recent_stat_converter.py",
+    "scripts/client/gui/mods/mod_recent_stat_init.py",
     "scripts/client/gui/mods/mod_recent_stat_loader.py",
     "scripts/client/gui/mods/mod_recent_stat_logging.py",
     "scripts/client/gui/mods/mod_recent_stat_network.py",

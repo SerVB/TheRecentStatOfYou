@@ -16,12 +16,11 @@ class WgStats:
     _ACCOUNT_INFO_URL = "https://api.worldoftanks.{region}/wot/account/info/?application_id={appId}&fields=statistics.all.battles%2Cstatistics.all.wins%2Cstatistics.all.damage_dealt%2Cstatistics.all.frags%2Cstatistics.all.spotted%2Cstatistics.all.capture_points%2Cstatistics.all.dropped_capture_points&account_id={joinedIds}"
     _ACCOUNT_TANK_URL = "https://api.worldoftanks.{region}/wot/account/tanks/?application_id={appId}&fields=statistics.battles%2Ctank_id&account_id={joinedIds}"
 
-    def __init__(self, configMain, configWgId, playerIdToData):
-        # type: (ConfigMain, ConfigWgId, dict) -> None
+    def __init__(self, configMain, configWgId):
+        # type: (ConfigMain, ConfigWgId) -> None
         self._wn8Expected = None
         self._configMain = configMain
         self._configWgId = configWgId
-        self.playerIdToData = playerIdToData
 
         self.loadWn8Expected()
 
@@ -37,14 +36,15 @@ class WgStats:
                 self._wn8Expected[idNum] = item
                 self._wn8Expected[idNum].pop("IDNum")
 
-    def loadPlayerDataByVehicleList(self, vehicles):
+    def loadPlayerDataByVehicleList(self, vehicles, playerIdToData):
+        # type: (dict, dict) -> None
         idsToBeLoaded = set()
 
         for _vehicleID, vehicleData in vehicles.iteritems():
             if "accountDBID" in vehicleData:
                 playerId = vehicleData["accountDBID"]
 
-                if playerId in self.playerIdToData:
+                if playerId in playerIdToData:
                     continue
 
                 idsToBeLoaded.add(playerId)
@@ -86,7 +86,7 @@ class WgStats:
                         playerData.wn8 = wn8
                         playerData.xwn8 = getXWN8(wn8)
 
-                    self.playerIdToData[playerId] = playerData
+                    playerIdToData[playerId] = playerData
 
     @staticmethod
     def getWN8(winrate, avgDmg, avgFrags, avgSpot, avgDef, accountTanks, wn8Expected):
