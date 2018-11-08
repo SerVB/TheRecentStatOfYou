@@ -31,22 +31,19 @@ class Kttc(StatProvider):
         answer = int(mainSiteText[startIdx:endIdx])
         return int(answer)
 
-    def _getStatistics(self, region, nickname, playerId):
-        # type: (str, str, str) -> dict
+    def _getStatistics(self, region, nickname, playerId, playerIdToData):
+        # type: (str, str, str, dict) -> None
         if playerId == PLAYER_ID_NOT_KNOWN:
             mainSiteText = getFormattedHtmlText("https://kttc.ru/wot/%s/user/%s/" % (region, nickname))
             playerId = self._getPlayerId(mainSiteText)
             logInfo("Player ID of %s = %s" % (nickname, playerId))
 
-        playerData = {
-            STAT_FIELDS.KILO_BATTLES: None,
-            STAT_FIELDS.WN8: None
-        }
+        playerData = playerIdToData[playerId]
 
         recentStatJson = json.loads(getJsonText("https://kttc.ru/wot/%s/user/%s/get-by-battles/%s/" % (region, nickname, playerId)))
         if recentStatJson["success"] and "1000" in recentStatJson["data"]:
             if recentStatJson["data"]["1000"]["BT"] != 0:  # Filter not valid recent stats
-                playerData[STAT_FIELDS.KILO_BATTLES] = str(recentStatJson["data"]["1000"]["BT"])
-                playerData[STAT_FIELDS.WN8] = str(int(round(recentStatJson["data"]["1000"]["WN8"])))  # TODO
+                playerData.wn8 = int(round(recentStatJson["data"]["1000"]["WN8"]))
+                playerData.xwn8 = int(round(recentStatJson["data"]["1000"]["XVM"]))
 
-        return playerData
+                playerData.hasRecentStat = True

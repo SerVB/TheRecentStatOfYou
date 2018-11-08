@@ -2,7 +2,12 @@
   /* Region. */
   /* Регион. */
   "region": "ru",
+
   /* Requests timeout (seconds). */
   /* Тайм-аут запросов (секунды). */
-  "timeout": 5
+  "timeout": 5,
+
+  /* Provider of recent stats. */
+  /* Провайдер недавней статистики. */
+  "recentStatProvider": "kttc"
 }

@@ -10,15 +10,14 @@ from mod_recent_stat_logging import logError
 class StatProvider:
     __metaclass__ = ABCMeta
 
-    def getStatistics(self, region, nickname, playerId):
-        # type: (str, str, str) -> dict
+    def getStatistics(self, region, nickname, playerId, playerIdToData):
+        # type: (str, str, str, dict) -> None
         try:
-            return self._getStatistics(region, nickname, playerId)
+            self._getStatistics(region, nickname, playerId, playerIdToData)
         except BaseException:
             logError("Error in getStatistics(%s, %s, %s)" % (region, nickname, playerId), traceback.format_exc())
-            return dict()
 
     @abstractmethod
-    def _getStatistics(self, region, nickname, playerId):
-        # type: (str, str, str) -> dict
+    def _getStatistics(self, region, nickname, playerId, playerIdToData):
+        # type: (str, str, str, dict) -> None
         pass

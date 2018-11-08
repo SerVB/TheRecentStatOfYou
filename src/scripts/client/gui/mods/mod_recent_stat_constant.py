@@ -10,7 +10,7 @@ class STAT_PROVIDER(object):
     NOOBMETER = "noobmeter"
     KTTC = "kttc"
 
-    SUPPORTED = (NOOBMETER, KTTC)
+    SUPPORTED = frozenset((NOOBMETER, KTTC))
 
 
 class STAT_FIELDS(object):
@@ -23,6 +23,7 @@ class STAT_FIELDS(object):
 class CONFIG_MAIN(object):
     REGION = "region"
     TIMEOUT = "timeout"
+    RECENT_STAT_PROVIDER = "recentStatProvider"
 
 
 class CONFIG_FORMAT(object):

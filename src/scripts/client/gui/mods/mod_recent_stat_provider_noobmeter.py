@@ -2,6 +2,7 @@
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
 from mod_recent_stat_constant import PLAYER_ID_NOT_KNOWN, COLUMN_ID_NOT_FOUND, MAX_ITERATIONS, STAT_FIELDS
+from mod_recent_stat_converter import getXWN8
 from mod_recent_stat_logging import logInfo
 from mod_recent_stat_network import getFormattedHtmlText, getNextRowCells, getNumberFromCell
 from mod_recent_stat_provider import StatProvider
@@ -72,8 +73,8 @@ class Noobmeter(StatProvider):
 
         return trs
 
-    def _getStatistics(self, region, nickname, playerId):
-        # type: (str, str, str) -> dict
+    def _getStatistics(self, region, nickname, playerId, playerIdToData):
+        # type: (str, str, str, dict) -> None
         if playerId == PLAYER_ID_NOT_KNOWN:
             idSiteText = getFormattedHtmlText("https://www.noobmeter.com/player/%s/%s" % (region, nickname))
             playerId = self._getPlayerId(idSiteText, nickname)
@@ -85,23 +86,20 @@ class Noobmeter(StatProvider):
         recentColumnIdx = self._getRecentColumnIdx(siteText, tableBeginIdx)
 
         if recentColumnIdx == COLUMN_ID_NOT_FOUND:
-            return dict()  # TODO
+            return
 
         trs = self._getTrsWithData(siteText, tableBeginIdx)
 
-        playerData = {
-            STAT_FIELDS.KILO_BATTLES: None,
-            STAT_FIELDS.WN8: None
-        }
+        playerData = playerIdToData[playerId]
 
         for tds in trs:
             if len(tds) != 0:
                 loweredRowTitle = tds[0].lower()
 
                 if "wn8" in loweredRowTitle:
-                    playerData[STAT_FIELDS.WN8] = getNumberFromCell(tds[recentColumnIdx])
-                elif "battles:" in loweredRowTitle or "кол. боёв:" in loweredRowTitle:
-                    playerData[STAT_FIELDS.KILO_BATTLES] = getNumberFromCell(tds[recentColumnIdx])  # TODO
+                    wn8 = getNumberFromCell(tds[recentColumnIdx])
+                    if wn8 is not None:
+                        playerData.wn8 = int(wn8)
+                        playerData.xwn8 = getXWN8(int(wn8))
 
-        return playerData
-
+                        playerData.hasRecentStat = True
