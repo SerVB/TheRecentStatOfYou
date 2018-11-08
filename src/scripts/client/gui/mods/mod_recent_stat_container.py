@@ -20,6 +20,15 @@ class PlayerData(object):
 
     hasRecentStat = False  # type: bool
 
+    def createDict(self):
+        # type: () -> dict
+        return {
+            STAT_FIELDS.KILO_BATTLES: self.kb,
+            STAT_FIELDS.BATTLES: self.battles,
+            STAT_FIELDS.WN8: self.wn8,
+            STAT_FIELDS.XWN8: self.xwn8,
+        }
+
 
 class SafeDict(dict):
     def __missing__(self, key):

@@ -32,7 +32,8 @@ class ModRecentStat:
         # type: (int, str) -> str
         playerInfo = self._playerIdToData.get(accountDBID, None)
         if playerInfo is not None:
-            newPlayerName = str(playerInfo.xwn8) + " " + str(playerInfo.kb) + "k " + playerName
+            formattedPlayerStat = self._configFormat.playerName.format(**playerInfo.createDict())
+            newPlayerName = formattedPlayerStat + playerName
             # newPlayerName = formattedPlayerName(playerName, configFormat)
             return newPlayerName
 

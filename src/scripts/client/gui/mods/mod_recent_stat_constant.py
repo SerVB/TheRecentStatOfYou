@@ -15,6 +15,8 @@ class STAT_PROVIDER(object):
 
 class STAT_FIELDS(object):
     WN8 = "wn8"
+    XWN8 = "xwn8"
+    BATTLES = "battles"
     KILO_BATTLES = "kb"
 
 
