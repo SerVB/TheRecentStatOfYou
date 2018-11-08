@@ -11,7 +11,7 @@ from mod_recent_stat_string import removeComments
 class ConfigFormat(Config):
     _defaultConfigPath = "mods/configs/io.github.servb.recent_stat/config_format.json"
 
-    _defaultPlayerName = "{wn8:0.0f}[{kb:0.0f}k]"
+    _defaultPlayerName = "{xwn8} {kb}k "
     _defaultNoInfo = "--"
 
     def __init__(self, configPath=_defaultConfigPath):
