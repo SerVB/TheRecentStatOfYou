@@ -2,6 +2,7 @@
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
 from threading import Thread
+import time
 import traceback
 
 from mod_recent_stat_config_format import ConfigFormat
@@ -27,6 +28,7 @@ class ModRecentStat:
 
     def loadPlayerDataByVehicleList(self, vehicles):
         # type: (dict) -> None
+        startTime = time.time()
         self._wgStats.loadPlayerDataByVehicleList(vehicles, self._playerIdToData)
 
         try:
@@ -73,7 +75,7 @@ class ModRecentStat:
                 else:
                     withoutStat += 1
 
-        logInfo("Stats loaded. With stats: %s, with recent stats: %s, without stats: %s." % (withStat, withRecentStat, withoutStat))
+        logInfo("Stats loaded in %s ms. With stats: %s, with recent stats: %s, without stats: %s." % (int(round((time.time() - startTime) * 1000)), withStat, withRecentStat, withoutStat))
 
     def formatPlayerName(self, accountDBID, playerName):
         # type: (int, str) -> str
