@@ -54,7 +54,7 @@ class ConfigMain(Config):
                             if statProvider not in STAT_PROVIDER.SUPPORTED:
                                 self.warnInvalidAttribute(CONFIG_MAIN.RECENT_STAT_PROVIDERS, statProvider, STAT_PROVIDER.SUPPORTED)
                             else:
-                                validProviders.append(validProviders)
+                                validProviders.append(statProvider)
 
                         self._recentStatProviderNames = validProviders
                 else:
