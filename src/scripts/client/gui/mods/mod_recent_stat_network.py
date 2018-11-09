@@ -6,7 +6,7 @@ from urllib2 import urlopen, Request
 
 from mod_recent_stat_string import removeTags
 
-_DEFAULT_TIMEOUT = 5
+_DEFAULT_TIMEOUT = 10
 
 
 def generateUserAgent():
