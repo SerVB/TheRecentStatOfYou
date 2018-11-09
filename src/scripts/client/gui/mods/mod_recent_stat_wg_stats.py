@@ -27,7 +27,7 @@ class WgStats:
     def loadWn8Expected(self):
         # type: () -> None
         if self._wn8Expected is None:
-            url = "http://www.wnefficiency.net/exp/expected_tank_values_latest.json"
+            url = "https://static.modxvm.com/wn8-data-exp/json/wn8exp.json"
             wn8ExpectedData = json.loads(getJsonText(url))["data"]
             self._wn8Expected = dict()
 
