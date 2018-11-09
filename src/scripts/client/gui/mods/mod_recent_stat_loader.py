@@ -78,9 +78,12 @@ class ModRecentStat:
         # type: (int, str) -> str
         playerInfo = self._playerIdToData.get(accountDBID, None)
         if playerInfo is not None:
-            formattedPlayerStat = self._configFormat.playerName.format(**playerInfo.createDict())
-            newPlayerName = formattedPlayerStat + playerName
-            # newPlayerName = formattedPlayerName(playerName, configFormat)
-            return newPlayerName
+            try:
+                formattedPlayerStat = self._configFormat.playerName.format(**playerInfo.createDict())
+                newPlayerName = formattedPlayerStat + playerName
+                return newPlayerName
+            except BaseException:
+                logError("Can't format player name", traceback.format_exc())
+                return playerName
 
         return playerName
