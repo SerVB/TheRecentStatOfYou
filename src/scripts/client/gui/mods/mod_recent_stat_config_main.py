@@ -55,6 +55,8 @@ class ConfigMain(Config):
                                 self.warnInvalidAttribute(CONFIG_MAIN.RECENT_STAT_PROVIDERS, statProvider, STAT_PROVIDER.SUPPORTED)
                             else:
                                 validProviders.append(validProviders)
+
+                        self._recentStatProviderNames = validProviders
                 else:
                     self.warnNoAttribute(CONFIG_MAIN.RECENT_STAT_PROVIDERS)
         except IOError:
