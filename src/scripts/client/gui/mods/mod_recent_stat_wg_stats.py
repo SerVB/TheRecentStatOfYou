@@ -60,7 +60,7 @@ class WgStats:
         try:
             accountsInfo = json.loads(getJsonText(accountsInfoUrl, self._configMain.timeout)).get("data", None)
             accountsTanks = json.loads(getJsonText(accountsTanksUrl, self._configMain.timeout)).get("data", None)
-        except (IOError, ValueError):
+        except BaseException:
             logError("Error loading statistics...", traceback.format_exc())
         else:
             for playerId in idsToBeLoaded:
