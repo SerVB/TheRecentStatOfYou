@@ -23,7 +23,7 @@ class STAT_FIELDS(object):
 class CONFIG_MAIN(object):
     REGION = "region"
     TIMEOUT = "timeout"
-    RECENT_STAT_PROVIDER = "recentStatProvider"
+    RECENT_STAT_PROVIDERS = "recentStatProviders"
 
 
 class CONFIG_FORMAT(object):

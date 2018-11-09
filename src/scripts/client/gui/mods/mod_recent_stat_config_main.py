@@ -16,17 +16,17 @@ class ConfigMain(Config):
 
     _defaultRegion = "ru"
     _defaultTimeout = 10
-    _defaultRecentStatProviderName = STAT_PROVIDER.KTTC
+    _defaultRecentStatProviderNames = (STAT_PROVIDER.KTTC, STAT_PROVIDER.NOOBMETER)
 
     def __init__(self, configPath=_defaultConfigPath):
         # type: (str) -> None
         self._configPath = configPath
         self.region = self._defaultRegion
         self.timeout = self._defaultTimeout
-        self.recentStatProvider = None
+        self._recentStatProviderNames = self._defaultRecentStatProviderNames
         self.load()
 
-        self.recentStatProvider = self.recentStatProvider or Kttc()
+        self.recentStatProviders = self.createProviders(self._recentStatProviderNames)
 
     def load(self):
         # type: () -> None
@@ -44,18 +44,23 @@ class ConfigMain(Config):
                 else:
                     self.warnNoAttribute(CONFIG_MAIN.TIMEOUT)
 
-                if CONFIG_MAIN.RECENT_STAT_PROVIDER in configJson:
-                    statProvider = configJson[CONFIG_MAIN.RECENT_STAT_PROVIDER]
+                if CONFIG_MAIN.RECENT_STAT_PROVIDERS in configJson:
+                    statProviders = configJson[CONFIG_MAIN.RECENT_STAT_PROVIDERS]
 
-                    if statProvider not in STAT_PROVIDER.SUPPORTED:
-                        self.warnInvalidAttribute(CONFIG_MAIN.RECENT_STAT_PROVIDER, statProvider, STAT_PROVIDER.SUPPORTED)
-                    elif statProvider == STAT_PROVIDER.KTTC:
-                        self.recentStatProvider = Kttc()
-                    elif statProvider == STAT_PROVIDER.NOOBMETER:
-                        self.recentStatProvider = Noobmeter()
-                    else:
-                        logError("Stat provider is supported but not meant by the config initializer: %s" % statProvider, "")
+                    if isinstance(statProviders, list):
+                        validProviders = []
+
+                        for statProvider in statProviders:
+                            if statProvider not in STAT_PROVIDER.SUPPORTED:
+                                self.warnInvalidAttribute(CONFIG_MAIN.RECENT_STAT_PROVIDERS, statProvider, STAT_PROVIDER.SUPPORTED)
+                            else:
+                                validProviders.append(validProviders)
                 else:
-                    self.warnNoAttribute(CONFIG_MAIN.RECENT_STAT_PROVIDER)
+                    self.warnNoAttribute(CONFIG_MAIN.RECENT_STAT_PROVIDERS)
         except IOError:
             self.errorCantFindFile()
+
+    @staticmethod
+    def createProviders(providerNames):
+        # type: ([list, tuple]) -> tuple
+        return tuple(map(lambda providerName: Noobmeter() if providerName == STAT_PROVIDER.NOOBMETER else Kttc(), providerNames))

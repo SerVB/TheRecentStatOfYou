@@ -40,12 +40,13 @@ class ModRecentStat:
                     if playerId in self._playerIdToData and self._playerIdToData[playerId].hasRecentStat:
                         continue
 
-                    task = Thread(
-                        target=self._configMain.recentStatProvider.getStatistics,
-                        args=(self._configMain.region, playerName, playerId, self._playerIdToData)
-                    )
-                    vehicleInfoTasks.add(task)
-                    task.start()
+                    for provider in self._configMain.recentStatProviders:
+                        task = Thread(
+                            target=provider.getStatistics,
+                            args=(self._configMain.region, playerName, playerId, self._playerIdToData)
+                        )
+                        vehicleInfoTasks.add(task)
+                        task.start()
 
             logInfo("Vehicle info task count: %d." % len(vehicleInfoTasks))
 

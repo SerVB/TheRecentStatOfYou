@@ -7,7 +7,7 @@
   /* Тайм-аут запросов (секунды). */
   "timeout": 10,
 
-  /* Provider of recent stats. */
-  /* Провайдер недавней статистики. */
-  "recentStatProvider": "kttc"
+  /* Providers of recent stats. Don't load recent stat: [], use multiple providers: ["kttc", "noobmeter"]. */
+  /* Провайдеры недавней статистики. Не загружать недавнюю стату: [], использовать несколько провайдеров: ["kttc", "noobmeter"]. */
+  "recentStatProviders": ["kttc", "noobmeter"]
 }
