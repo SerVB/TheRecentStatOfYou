@@ -49,6 +49,9 @@ class WgStats:
 
                 idsToBeLoaded.add(playerId)
 
+        for playerId in idsToBeLoaded:
+            playerIdToData[playerId] = PlayerData()
+
         joinedIds = ",".join(map(str, idsToBeLoaded))
 
         accountsInfoUrl = self._ACCOUNT_INFO_URL \
@@ -67,13 +70,16 @@ class WgStats:
                 strPlayerId = str(playerId)
                 if strPlayerId in accountsInfo and accountsInfo[strPlayerId]["statistics"]["all"]["battles"] != 0:
                     currentAccountInfo = accountsInfo[strPlayerId]
+                    battles = currentAccountInfo["statistics"]["all"]["battles"]
 
-                    playerData = PlayerData()
-                    playerData.battles = currentAccountInfo["statistics"]["all"]["battles"]
-                    playerData.kb = formatBattlesToKiloBattles(currentAccountInfo["statistics"]["all"]["battles"])
+                    playerData = playerIdToData[playerId]
+                    playerData.battles = battles
+                    playerData.kb = formatBattlesToKiloBattles(battles)
+                    playerData.wn8 = 0
+                    playerData.xwn8 = 0
 
-                    if strPlayerId in accountsTanks:
-                        floatBattles = float(currentAccountInfo["statistics"]["all"]["battles"])
+                    if strPlayerId in accountsTanks and battles != 0:
+                        floatBattles = float(battles)
 
                         winrate = currentAccountInfo["statistics"]["all"]["wins"] * 100.0 / floatBattles
                         avgDmg = currentAccountInfo["statistics"]["all"]["damage_dealt"] / floatBattles
@@ -85,8 +91,6 @@ class WgStats:
 
                         playerData.wn8 = wn8
                         playerData.xwn8 = getXWN8(wn8)
-
-                    playerIdToData[playerId] = playerData
 
     @staticmethod
     def getWN8(winrate, avgDmg, avgFrags, avgSpot, avgDef, accountTanks, wn8Expected):
