@@ -26,15 +26,14 @@ class WgStats:
 
     def loadWn8Expected(self):
         # type: () -> None
-        if self._wn8Expected is None:
-            url = "https://static.modxvm.com/wn8-data-exp/json/wn8exp.json"
-            wn8ExpectedData = json.loads(getJsonText(url))["data"]
-            self._wn8Expected = dict()
+        wn8ExpectedUrl = "https://static.modxvm.com/wn8-data-exp/json/wn8exp.json"
+        wn8ExpectedData = json.loads(getJsonText(wn8ExpectedUrl))["data"]
+        self._wn8Expected = dict()
 
-            for item in wn8ExpectedData:
-                idNum = item["IDNum"]
-                self._wn8Expected[idNum] = item
-                self._wn8Expected[idNum].pop("IDNum")
+        for item in wn8ExpectedData:
+            idNum = item["IDNum"]
+            self._wn8Expected[idNum] = item
+            self._wn8Expected[idNum].pop("IDNum")
 
     def loadPlayerDataByVehicleList(self, vehicles, playerIdToData):
         # type: (dict, dict) -> None
