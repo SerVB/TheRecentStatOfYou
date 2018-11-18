@@ -38,3 +38,7 @@ class ConfigFormat(Config):
                     self.warnNoAttribute(CONFIG_FORMAT.NO_INFO)
         except IOError:
             self.errorCantFindFile()
+
+    def __str__(self):
+        # type: () -> str
+        return "{playerName='%s', noInfo='%s'}" % (self.playerName, self.noInfo)

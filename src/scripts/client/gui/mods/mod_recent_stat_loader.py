@@ -24,7 +24,7 @@ class ModRecentStat:
         self._playerIdToData = dict()
         self._wgStats = WgStats(self._configMain, self._configWgId)
 
-        logInfo("Mod loading is finished.")
+        logInfo("Mod loading is finished: main = %s, format = %s." % (self._configMain, self._configFormat))
 
     def loadPlayerDataByVehicleList(self, vehicles):
         # type: (dict) -> None

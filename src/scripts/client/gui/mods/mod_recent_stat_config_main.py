@@ -66,3 +66,7 @@ class ConfigMain(Config):
     def createProviders(providerNames):
         # type: ([list, tuple]) -> tuple
         return tuple(map(lambda providerName: Noobmeter() if providerName == STAT_PROVIDER.NOOBMETER else Kttc(), providerNames))
+
+    def __str__(self):
+        # type: () -> str
+        return "{region='%s', timeout=%s, providerNames=%s}" % (self.region, self.timeout, self._recentStatProviderNames)
