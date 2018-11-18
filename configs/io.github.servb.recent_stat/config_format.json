@@ -1,5 +1,25 @@
 {
-  /* {xwn8}, {wn8}, {kb}, {battles}. */
+  /* Player name prefix format. Type: string. */
+  /* Example: */
+  /* "{xwn8} {kb}k " */
+  /* Available macros: */
+  /* {xwn8} -- 2-digit WN8. */
+  /* {wn8} -- 4-digit WN8. */
+  /* {kb} -- kilobattle count. */
+  /* {battles} -- battle count. */
+
+  /* Формат префикса имени игрока. Тип: строка. */
+  /* Пример: */
+  /* "{xwn8} {kb}k " */
+  /* Доступные макросы: */
+  /* {xwn8} -- двухзначный WN8. */
+  /* {wn8} -- четырехзначный WN8. */
+  /* {kb} -- количество тысяч боев. */
+  /* {battles} -- количество боев. */
   "playerName": "{xwn8} {kb}k ",
+
+  /* Not used. */
+
+  /* Не используется. */
   "noInfo": "--"
 }

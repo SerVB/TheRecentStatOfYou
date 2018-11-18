@@ -1,13 +1,36 @@
 {
-  /* Region. */
-  /* Регион. */
+  /* Region. Type: string. */
+  /* Examples: TODO: add examples of other regions. */
+  /* "ru" */
+
+  /* Регион. Тип: строка. */
+  /* Примеры: TODO: добавить примеры других регионов. */
+  /* "ru" */
   "region": "ru",
 
-  /* Requests timeout (seconds). */
-  /* Тайм-аут запросов (секунды). */
+  /* Requests timeout (seconds). Type: number. */
+  /* Examples: */
+  /* 5 */
+  /* 10 */
+
+  /* Тайм-аут запросов (секунды). Тип: число. */
+  /* Примеры: */
+  /* 5 */
+  /* 10 */
   "timeout": 10,
 
-  /* Providers of recent stats. Don't load recent stat: [], use multiple providers: ["kttc", "noobmeter"]. */
-  /* Провайдеры недавней статистики. Не загружать недавнюю стату: [], использовать несколько провайдеров: ["kttc", "noobmeter"]. */
+  /* Providers of recent stats. Type: list of strings. */
+  /* Available providers: "kttc", "noobmeter". */
+  /* Examples: */
+  /* [] */ /* <-- Don't load recent stats. */
+  /* ["kttc"] */ /* <-- Use a single provider. */
+  /* ["kttc", "noobmeter"] */ /* <-- Use multiple providers. */
+
+  /* Провайдеры недавней статистики. Тип: список строк. */
+  /* Доступные провайдеры: "kttc", "noobmeter". */
+  /* Примеры: */
+  /* [] */ /* <-- Не загружать недавнюю стату. */
+  /* ["kttc"] */ /* <-- Использовать одного провайдера. */
+  /* ["kttc", "noobmeter"] */ /* <-- Использовать несколько провайдеров. */
   "recentStatProviders": ["kttc", "noobmeter"]
 }
