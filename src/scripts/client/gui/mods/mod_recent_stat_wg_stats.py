@@ -51,6 +51,9 @@ class WgStats:
         for playerId in idsToBeLoaded:
             playerIdToData[playerId] = PlayerData()
 
+        if len(idsToBeLoaded) == 0:  # All IDs can be already loaded or vehicle list can be empty
+            return
+
         joinedIds = ",".join(map(str, idsToBeLoaded))
 
         accountsInfoUrl = self._ACCOUNT_INFO_URL \
