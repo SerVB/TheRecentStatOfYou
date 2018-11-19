@@ -1,7 +1,9 @@
-# The Recent Stat of You
 [![Python 2.7.7](https://img.shields.io/badge/python-2.7.7-blue.svg)](https://www.python.org/download/releases/2.7.7/)
 [![Build status](https://travis-ci.org/SerVB/TheRecentStatOfYou.svg?master)](https://travis-ci.org/SerVB/TheRecentStatOfYou)
 
+# Русский [read in English](#English)
+
+# The Recent Stat of You
 Мод с открытым исходным кодом для отображения недавней статистики игроков в бою.
 
 ## Суть
@@ -59,3 +61,65 @@
 - [Гайд](https://koreanrandom.com/forum/topic/36987-mod-packages-%D0%BF%D0%B0%D0%BA%D0%B5%D1%82%D1%8B-%D0%BC%D0%BE%D0%B4%D0%BE%D0%B2/) по созданию `.wotmod` пакетов.
 - **Ekspoint** помогал по многим вопросам. 
 - [Люди](https://github.com/SerVB/TheRecentStatOfYou/graphs/contributors), которые контрибьютили непосредственно в проект.
+
+# English
+
+# The Recent Stat of You
+An open-source mod displaying players' recent statistics in battle.
+
+## Idea
+The main difference of this mod from similar is the ability to display more informative **recent** efficiency rating (approximately of the last thousand battles, that is, of the last 50 hours of playing time). Otherwise, this is the same mod that you saw from *XVM*, *PolarFox* and *Ekspoint*.
+
+The mod allows to display statistics in the following places:
+- On the battle loading screen.
+- On the battle players panel.
+- In markers.
+- On the Tab players panel.
+
+## How does it look like?
+Currently, statistics are displayed using players renaming: a prefix is added to the name. The prefix can be configured in the configuration file.
+
+## How does it work?
+Mod asks the providers of recent statistics, and there is an answer, displays recent stats instead of overall statistics.
+
+Data is taken from [kttc.ru](https://kttc.ru/) (permission is granted) и [noobmeter.com](https://noobmeter.com/) (I couldn't contact the site developers so I assume there is no prohibition to use the site).
+
+## Contribute
+Pull request opening to resolve planning tasks or any other tasks is appreciated.
+Any ideas on development will also be happy to be heard, you can leave your questions and suggestions in the "[Issues](https://github.com/SerVB/TheRecentStatOfYou/issues)" tab.
+
+In the near future, I do not plan to improve the mod, because I have other projects. I myself use the mod in the current state, and it suits me.
+
+## Planing tasks
+are located in the "[Issues](https://github.com/SerVB/TheRecentStatOfYou/issues)" tab.
+
+## Screenshots and downloads
+are located in the "[Releases](https://github.com/SerVB/TheRecentStatOfYou/releases)" tab.
+
+## Installation
+Place the file `.wotmod` into `mods/{game_version}/`. To change default mod settings download the dir `configs` and place it into `mods/`.
+
+## Build from sources
+Run the file `build.py` (I recommend Python 2.7.7), sources will be built in the dir `build/`.
+
+## Known issues
+- At a battle loading start there is a lag of 3-10 seconds. It's because of data downloading from the Internet. Downloading happens in multiple threads, asynchronously and simultaneously so I think there is nothing to improve. It's the time of a single query completion.
+- Sometimes there are messages in the log like "can't find player name, use slow search". Maybe it's because the mod just renames players. There is no symptoms have been noticed. Anyway, in future game versions it can became a problem...
+
+## FAQ
+**Q**. The mod isn't adopted for a new World of Tanks version.
+**A**. Check `mod_recent_stat_init.py` for the list of modified files. Find the same files in game decompiled sources [WorldOfTanks-Decompiled](https://github.com/StranikS-Scan/WorldOfTanks-Decompiled/). If they haven't been changed, it's likely the mod will work. It's only needed to put the mod in the new dir. For example, the mod was working after update from 1.1 to 1.2.
+
+**Q**. Which clusters are supported?  
+**A**. All clusters should be supported. Try to change it in `config_main.json`.
+
+**Q**. How to change providers of recent stat or completely disable the recent stat feature?  
+**A**. In `config_main.json`.
+
+## Attributions
+- **VasyaPRO_2014** &mdash; idea of open-source mod showing statistics in battle; mod builder ([topic at Korean Random](https://koreanrandom.com/forum/topic/29691-09152-%D1%81%D1%82%D0%B0%D1%82%D0%B8%D1%81%D1%82%D0%B8%D0%BA%D0%B0-%D0%B8%D0%B3%D1%80%D0%BE%D0%BA%D0%BE%D0%B2-%D0%B2-%D0%B1%D0%BE%D1%8E-%D0%B1%D0%B5%D0%B7-xvm/), [GitHub repo](https://github.com/VasyaPRO/StatsInBattle)).
+- [WorldOfTanks-Decompiled](https://github.com/StranikS-Scan/WorldOfTanks-Decompiled/) Project &mdash; decompiled files have been used to develop the modification.
+- Sites [kttc.ru](https://kttc.ru/) и [noobmeter.com](http://noobmeter.com/) &mdash; recent stats providers.
+- [Guide](https://koreanrandom.com/forum/topic/36987-mod-packages-%D0%BF%D0%B0%D0%BA%D0%B5%D1%82%D1%8B-%D0%BC%D0%BE%D0%B4%D0%BE%D0%B2/) of `.wotmod` packages creation.
+- **Ekspoint** helped in many questions. 
+- [People](https://github.com/SerVB/TheRecentStatOfYou/graphs/contributors) who contribute into the project.
