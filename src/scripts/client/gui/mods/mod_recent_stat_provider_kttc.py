@@ -11,33 +11,8 @@ from mod_recent_stat_provider import StatProvider
 
 
 class Kttc(StatProvider):
-    @staticmethod
-    def _getPlayerId(mainSiteText):
-        # type: (str) -> int
-        methodCallBeginIdx = mainSiteText.find("kttc.account.init(")
-        assert methodCallBeginIdx != -1, "No method call found"
-
-        methodCallEndIdx = mainSiteText.find("</script>", methodCallBeginIdx)
-        assert methodCallEndIdx != -1, "No method end found"
-
-        accountIdx = mainSiteText.find("'accountId'", methodCallBeginIdx, methodCallEndIdx)
-        assert accountIdx != -1, "No accountId found"
-
-        startIdx = accountIdx
-        for _ in range(3):
-            startIdx = mainSiteText.find("'", startIdx, methodCallEndIdx) + 1
-
-        endIdx = mainSiteText.find("'", startIdx, methodCallEndIdx)
-        answer = int(mainSiteText[startIdx:endIdx])
-        return int(answer)
-
     def _getStatistics(self, region, nickname, playerId, playerIdToData):
         # type: (str, str, str, dict) -> None
-        if playerId == PLAYER_ID_NOT_KNOWN:
-            mainSiteText = getFormattedHtmlText("https://kttc.ru/wot/%s/user/%s/" % (region, nickname))
-            playerId = self._getPlayerId(mainSiteText)
-            logInfo("Player ID of %s = %s" % (nickname, playerId))
-
         playerData = playerIdToData[playerId]
 
         recentStatJson = json.loads(getJsonText("https://kttc.ru/wot/%s/user/%s/get-by-battles/%s/" % (region, nickname, playerId)))

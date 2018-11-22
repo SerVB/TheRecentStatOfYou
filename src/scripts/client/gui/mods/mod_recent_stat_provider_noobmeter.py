@@ -10,15 +10,6 @@ from mod_recent_stat_provider import StatProvider
 
 class Noobmeter(StatProvider):
     @staticmethod
-    def _getPlayerId(idSiteText, nickname):
-        # type: (str, str) -> int
-        nameTitle = "<h1>%s</h1>" % nickname
-        nameTitleEndIndex = idSiteText.find(nameTitle) + len(nameTitle)
-        idStartIndex = idSiteText.find("<!--", nameTitleEndIndex) + len("<!--")
-        idEndIndex = idSiteText.find("-->", idStartIndex) - 1
-        return int(idSiteText[idStartIndex:idEndIndex].strip())
-
-    @staticmethod
     def _getStatTableBeginIdx(siteText):
         # type: (str) -> int
         iterations = 0
@@ -75,12 +66,7 @@ class Noobmeter(StatProvider):
 
     def _getStatistics(self, region, nickname, playerId, playerIdToData):
         # type: (str, str, str, dict) -> None
-        if playerId == PLAYER_ID_NOT_KNOWN:
-            idSiteText = getFormattedHtmlText("https://www.noobmeter.com/player/%s/%s" % (region, nickname))
-            playerId = self._getPlayerId(idSiteText, nickname)
-            logInfo("Player ID of %s = %s" % (nickname, playerId))
-
-        siteText = getFormattedHtmlText("https://www.noobmeter.com/player/%s/%s/%d" % (region, nickname, playerId))
+        siteText = getFormattedHtmlText("https://www.noobmeter.com/player/%s/%s/%s" % (region, nickname, playerId))
 
         tableBeginIdx = self._getStatTableBeginIdx(siteText)
         recentColumnIdx = self._getRecentColumnIdx(siteText, tableBeginIdx)
