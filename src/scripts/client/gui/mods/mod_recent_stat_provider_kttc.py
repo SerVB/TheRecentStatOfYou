@@ -12,7 +12,7 @@ from mod_recent_stat_provider import StatProvider
 
 class Kttc(StatProvider):
     def _getStatistics(self, region, nickname, playerId, playerIdToData):
-        # type: (str, str, str, dict) -> None
+        # type: (str, str, int, dict) -> None
         playerData = playerIdToData[playerId]
 
         recentStatJson = json.loads(getJsonText("https://kttc.ru/wot/%s/user/%s/get-by-battles/%s/" % (region, nickname, playerId)))

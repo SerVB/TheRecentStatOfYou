@@ -65,7 +65,7 @@ class Noobmeter(StatProvider):
         return trs
 
     def _getStatistics(self, region, nickname, playerId, playerIdToData):
-        # type: (str, str, str, dict) -> None
+        # type: (str, str, int, dict) -> None
         siteText = getFormattedHtmlText("https://www.noobmeter.com/player/%s/%s/%s" % (region, nickname, playerId))
 
         tableBeginIdx = self._getStatTableBeginIdx(siteText)

@@ -11,7 +11,7 @@ class StatProvider:
     __metaclass__ = ABCMeta
 
     def getStatistics(self, region, nickname, playerId, playerIdToData):
-        # type: (str, str, str, dict) -> None
+        # type: (str, str, int, dict) -> None
         try:
             self._getStatistics(region, nickname, playerId, playerIdToData)
         except BaseException:
@@ -19,5 +19,5 @@ class StatProvider:
 
     @abstractmethod
     def _getStatistics(self, region, nickname, playerId, playerIdToData):
-        # type: (str, str, str, dict) -> None
+        # type: (str, str, int, dict) -> None
         pass
