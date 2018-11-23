@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
+from copy import deepcopy
 from threading import Thread
 import time
 import traceback
@@ -24,7 +25,24 @@ class ModRecentStat:
         self._playerIdToData = dict()
         self._wgStats = WgStats(self._configMain, self._configWgId)
 
+        self._welcomeMessage = self._loadWelcomeMessage()
+
         logInfo("Mod loading is finished: main = %s, format = %s." % (self._configMain, self._configFormat))
+
+    def getWelcomeMessage(self):
+        return deepcopy(self._welcomeMessage)
+
+    @staticmethod
+    def _loadWelcomeMessage():
+        defaultMessage = {
+            "message": {
+                "message": "The Recent Stat of You<br>Info: <a href='#'>https://github.com/SerVB/TheRecentStatOfYou</a><br>Donate: <a href='#'>https://github.com/SerVB/donate</a>",
+                "icon": "../maps/icons/library/MessageIcon-1.png"
+            },
+            "notify": False
+        }
+
+        return defaultMessage
 
     def loadPlayerDataByVehicleList(self, vehicles):
         # type: (dict) -> None
