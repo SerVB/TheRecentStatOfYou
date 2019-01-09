@@ -11,6 +11,8 @@ from mod_recent_stat_provider import StatProvider
 
 
 class Kttc(StatProvider):
+    name = "Kttc"
+
     def _getStatistics(self, region, nickname, playerId, playerIdToData):
         # type: (str, str, int, dict) -> None
         playerData = playerIdToData[playerId]

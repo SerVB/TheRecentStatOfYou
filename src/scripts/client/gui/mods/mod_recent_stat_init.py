@@ -40,6 +40,7 @@ def nlv_getMessagesListNew(self):
     result = nlv_getMessagesListOld(self)
 
     result.insert(0, modRecentStat.getWelcomeMessage())
+    result.insert(1, modRecentStat.getInfoMessage())
 
     return result
 

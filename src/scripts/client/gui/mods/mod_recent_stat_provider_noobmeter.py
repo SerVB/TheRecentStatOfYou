@@ -9,6 +9,8 @@ from mod_recent_stat_provider import StatProvider
 
 
 class Noobmeter(StatProvider):
+    name = "Noobmeter"
+
     @staticmethod
     def _getStatTableBeginIdx(siteText):
         # type: (str) -> int

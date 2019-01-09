@@ -26,11 +26,15 @@ class ModRecentStat:
         self._wgStats = WgStats(self._configMain, self._configWgId)
 
         self._welcomeMessage = self._loadWelcomeMessage()
+        self._infoMessage = self._loadInfoMessage()
 
         logInfo("Mod loading is finished: main = %s, format = %s." % (self._configMain, self._configFormat))
 
     def getWelcomeMessage(self):
         return deepcopy(self._welcomeMessage)
+
+    def getInfoMessage(self):
+        return deepcopy(self._infoMessage)
 
     @staticmethod
     def _loadWelcomeMessage():
@@ -43,6 +47,15 @@ class ModRecentStat:
         }
 
         return defaultMessage
+
+    def _loadInfoMessage(self):
+        return {
+            "message": {
+                "message": "Configs:<br><br>main = %s<br><br>format = %s" % (self._configMain, self._configFormat),
+                "icon": "../maps/icons/library/MessageIcon-1.png"
+            },
+            "notify": False
+        }
 
     def loadPlayerDataByVehicleList(self, vehicles):
         # type: (dict) -> None

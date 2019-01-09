@@ -10,6 +10,8 @@ from mod_recent_stat_logging import logError
 class StatProvider:
     __metaclass__ = ABCMeta
 
+    name = "Abstract Stat Provider"
+
     def getStatistics(self, region, nickname, playerId, playerIdToData):
         # type: (str, str, int, dict) -> None
         try:

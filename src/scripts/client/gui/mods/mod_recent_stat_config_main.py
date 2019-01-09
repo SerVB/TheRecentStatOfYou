@@ -69,4 +69,4 @@ class ConfigMain(Config):
 
     def __str__(self):
         # type: () -> str
-        return "{region='%s', timeout=%s, providerNames=%s}" % (self.region, self.timeout, self._recentStatProviderNames)
+        return "{region='%s', timeout=%s, providerNames=%s}" % (self.region, self.timeout, list(map(lambda provider: provider.name, self.recentStatProviders)))
