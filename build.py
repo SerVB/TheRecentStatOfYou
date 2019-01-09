@@ -18,7 +18,7 @@ if os.path.isdir(config["buildRoot"]):  # Remove build dir
     shutil.rmtree(config["buildRoot"])
 os.makedirs(config["buildRoot"])
 
-packagedFilePath = config["buildRoot"] + config["packageName"] + "_" + str(config["modVersion"]) + ".wotmod"
+packagedFilePath = config["buildRoot"] + config["packageName"] + "_" + config["wotVersion"] + "-" + str(config["modVersion"]) + ".wotmod"
 
 with zipfile.ZipFile(packagedFilePath, "w", zipfile.ZIP_STORED) as packagedFile:
     for filePath in config["files"]:
