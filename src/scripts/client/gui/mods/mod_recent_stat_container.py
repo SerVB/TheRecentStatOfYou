@@ -16,8 +16,15 @@ class PlayerData(object):
     def createDict(self, configFormat):
         # type: (ConfigFormat) -> dict
         return {
-            STAT_FIELDS.KILO_BATTLES: self.kb or configFormat.noInfo,
-            STAT_FIELDS.BATTLES: self.battles or configFormat.noInfo,
-            STAT_FIELDS.WN8: self.wn8 or configFormat.noInfo,
-            STAT_FIELDS.XWN8: self.xwn8 or configFormat.noInfo,
+            STAT_FIELDS.KILO_BATTLES: self.orNoInfo(self.kb, configFormat.noInfo),
+            STAT_FIELDS.BATTLES: self.orNoInfo(self.battles, configFormat.noInfo),
+            STAT_FIELDS.WN8: self.orNoInfo(self.wn8, configFormat.noInfo),
+            STAT_FIELDS.XWN8: self.orNoInfo(self.xwn8, configFormat.noInfo),
         }
+
+    @staticmethod
+    def orNoInfo(value, configFormat):
+        # type: ([int, None], ConfigFormat) -> [int, str]
+        if value is None:
+            return configFormat.noInfo
+        return value
