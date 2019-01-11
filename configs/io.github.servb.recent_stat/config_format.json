@@ -18,8 +18,12 @@
   /* {battles} -- количество боев. */
   "playerName": "{xwn8} {kb}k ",
 
-  /* Not used. */
+  /* Symbols showing there is no data. Type: string. */
+  /* Example: */
+  /* "--" */
 
-  /* Не используется. */
+  /* Символы, обозначающие отсутствие информации. Тип: строка. */
+  /* Пример: */
+  /* "--" */
   "noInfo": "--"
 }
