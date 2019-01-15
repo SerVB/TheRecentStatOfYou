@@ -19,8 +19,7 @@ def buildVehiclesDataNew(self, vehicles):
     buildVehiclesDataOld(self, vehicles)
 
 
-buildVehiclesDataOld = ArenaDataProvider.buildVehiclesData
-ArenaDataProvider.buildVehiclesData = buildVehiclesDataNew
+ArenaDataProvider.buildVehiclesData, buildVehiclesDataOld = buildVehiclesDataNew, ArenaDataProvider.buildVehiclesData
 
 
 def formatNew(self, vInfoVO, playerName=None):
@@ -32,8 +31,7 @@ def formatNew(self, vInfoVO, playerName=None):
     return PlayerFormatResult(result.playerFullName, newPlayerName, result.clanAbbrev, result.regionCode, result.vehicleName)
 
 
-formatOld = PlayerFullNameFormatter.format
-PlayerFullNameFormatter.format = formatNew
+PlayerFullNameFormatter.format, formatOld = formatNew, PlayerFullNameFormatter.format
 
 
 def nlv_getMessagesListNew(self):
@@ -45,7 +43,6 @@ def nlv_getMessagesListNew(self):
     return result
 
 
-nlv_getMessagesListOld = NotificationListView._NotificationListView__getMessagesList
-NotificationListView._NotificationListView__getMessagesList = nlv_getMessagesListNew
+NotificationListView._NotificationListView__getMessagesList, nlv_getMessagesListOld = nlv_getMessagesListNew, NotificationListView._NotificationListView__getMessagesList
 
 logInfo("Mod initialization is finished.")
