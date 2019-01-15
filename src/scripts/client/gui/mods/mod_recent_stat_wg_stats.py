@@ -70,29 +70,32 @@ class WgStats:
         else:
             for playerId in idsToBeLoaded:
                 strPlayerId = str(playerId)
-                if strPlayerId in accountsInfo and accountsInfo[strPlayerId]["statistics"]["all"]["battles"] != 0:
-                    currentAccountInfo = accountsInfo[strPlayerId]
-                    battles = currentAccountInfo["statistics"]["all"]["battles"]
+                try:
+                    if accountsInfo[strPlayerId]["statistics"]["all"]["battles"] != 0:
+                        currentAccountInfo = accountsInfo[strPlayerId]
+                        battles = currentAccountInfo["statistics"]["all"]["battles"]
 
-                    playerData = playerIdToData[playerId]
-                    playerData.battles = battles
-                    playerData.kb = formatBattlesToKiloBattles(battles)
-                    playerData.wn8 = 0
-                    playerData.xwn8 = 0
+                        playerData = playerIdToData[playerId]
+                        playerData.battles = battles
+                        playerData.kb = formatBattlesToKiloBattles(battles)
+                        playerData.wn8 = 0
+                        playerData.xwn8 = 0
 
-                    if strPlayerId in accountsTanks and battles != 0:
-                        floatBattles = float(battles)
+                        if strPlayerId in accountsTanks and battles != 0:
+                            floatBattles = float(battles)
 
-                        winrate = currentAccountInfo["statistics"]["all"]["wins"] * 100.0 / floatBattles
-                        avgDmg = currentAccountInfo["statistics"]["all"]["damage_dealt"] / floatBattles
-                        avgFrags = currentAccountInfo["statistics"]["all"]["frags"] / floatBattles
-                        avgSpot = currentAccountInfo["statistics"]["all"]["spotted"] / floatBattles
-                        avgDef = currentAccountInfo["statistics"]["all"]["dropped_capture_points"] / floatBattles
+                            winrate = currentAccountInfo["statistics"]["all"]["wins"] * 100.0 / floatBattles
+                            avgDmg = currentAccountInfo["statistics"]["all"]["damage_dealt"] / floatBattles
+                            avgFrags = currentAccountInfo["statistics"]["all"]["frags"] / floatBattles
+                            avgSpot = currentAccountInfo["statistics"]["all"]["spotted"] / floatBattles
+                            avgDef = currentAccountInfo["statistics"]["all"]["dropped_capture_points"] / floatBattles
 
-                        wn8 = self.getWN8(winrate, avgDmg, avgFrags, avgSpot, avgDef, accountsTanks[strPlayerId], self._wn8Expected)
+                            wn8 = self.getWN8(winrate, avgDmg, avgFrags, avgSpot, avgDef, accountsTanks[strPlayerId], self._wn8Expected)
 
-                        playerData.wn8 = wn8
-                        playerData.xwn8 = getXWN8(wn8)
+                            playerData.wn8 = wn8
+                            playerData.xwn8 = getXWN8(wn8)
+                except BaseException:
+                    logError("Error calculating stats for PlayerID %s..." % playerId, traceback.format_exc())
 
     @staticmethod
     def getWN8(winrate, avgDmg, avgFrags, avgSpot, avgDef, accountTanks, wn8Expected):
