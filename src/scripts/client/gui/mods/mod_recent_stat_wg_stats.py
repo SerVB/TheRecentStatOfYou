@@ -78,8 +78,8 @@ class WgStats:
                         playerData = playerIdToData[playerId]
                         playerData.battles = battles
                         playerData.kb = formatBattlesToKiloBattles(battles)
-                        playerData.wn8 = 0
-                        playerData.xwn8 = 0
+                        playerData.wn8 = None
+                        playerData.xwn8 = None
 
                         if strPlayerId in accountsTanks and battles != 0:
                             floatBattles = float(battles)
