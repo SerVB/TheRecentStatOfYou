@@ -99,7 +99,7 @@ class ModRecentStat:
                 playerId = vehicleData["accountDBID"]
 
                 if playerId in self._playerIdToData:
-                    withStat += 1
+                    withStat += 1  # TODO if all nulls then withoutStat
 
                     if self._playerIdToData[playerId].hasRecentStat:
                         withRecentStat += 1
