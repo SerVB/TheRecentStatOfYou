@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
-from copy import deepcopy
 from threading import Thread
 import time
 import traceback
@@ -14,6 +13,8 @@ from mod_recent_stat_wg_stats import WgStats
 
 
 class ModRecentStat:
+    notificationsShowed = False
+
     def __init__(self, configFormat=None, configMain=None, configWgId=None):
         # type: (ConfigFormat, ConfigMain, ConfigWgId) -> None
         logInfo("Mod loading is started.")
@@ -31,31 +32,31 @@ class ModRecentStat:
         logInfo("Mod loading is finished: main = %s, format = %s." % (self._configMain, self._configFormat))
 
     def getWelcomeMessage(self):
-        return deepcopy(self._welcomeMessage)
+        # type: () -> str
+        return self._welcomeMessage
 
     def getInfoMessage(self):
-        return deepcopy(self._infoMessage)
+        # type: () -> str
+        return self._infoMessage
 
     @staticmethod
     def _loadWelcomeMessage():
-        defaultMessage = {
-            "message": {
-                "message": "The Recent Stat of You<br>Info: <a href='#'>https://github.com/SerVB/TheRecentStatOfYou</a><br>Donate: <a href='#'>https://github.com/SerVB/donate</a>",
-                "icon": "../maps/icons/library/MessageIcon-1.png"
-            },
-            "notify": False
-        }
+        # type: () -> str
+        defaultMessage = "The Recent Stat of You<br>" + \
+                         "Info: <a href='event:https://github.com/SerVB/TheRecentStatOfYou'>https://github.com/SerVB/TheRecentStatOfYou</a><br>" + \
+                         "Donate: <a href='event:https://github.com/SerVB/donate'>https://github.com/SerVB/donate</a>"
 
         return defaultMessage
 
     def _loadInfoMessage(self):
-        return {
-            "message": {
-                "message": "Configs:<br><br>main = %s<br><br>format = %s" % (self._configMain, self._configFormat),
-                "icon": "../maps/icons/library/MessageIcon-1.png"
-            },
-            "notify": False
-        }
+        # type: () -> str
+        return (
+                       "Configs:<br>" +
+                       "<br>" +
+                       "main = %s<br>" +
+                       "<br>" +
+                       "format = %s"
+               ) % (self._configMain, self._configFormat)
 
     def loadPlayerDataByVehicleList(self, vehicles):
         # type: (dict) -> None
@@ -106,7 +107,8 @@ class ModRecentStat:
                 else:
                     withoutStat += 1
 
-        logInfo("Stats loaded in %s ms. With stats: %s, with recent stats: %s, without stats: %s." % (int(round((time.time() - startTime) * 1000)), withStat, withRecentStat, withoutStat))
+        logInfo("Stats loaded in %s ms. With stats: %s, with recent stats: %s, without stats: %s." %
+                (int(round((time.time() - startTime) * 1000)), withStat, withRecentStat, withoutStat))
 
     def formatPlayerName(self, accountDBID, playerName):
         # type: (int, str) -> str

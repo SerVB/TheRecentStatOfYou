@@ -2,14 +2,18 @@
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
 import traceback
+import re
 
+import BigWorld
 from gui.battle_control.arena_info.arena_dp import ArenaDataProvider
 from gui.battle_control.arena_info.player_format import PlayerFullNameFormatter, PlayerFormatResult
-from notification.NotificationListView import NotificationListView
+from gui.SystemMessages import SM_TYPE, pushMessage
+from gui.Scaleform.daapi.view.lobby.LobbyView import LobbyView
+from notification.settings import NOTIFICATION_TYPE
+from notification.actions_handlers import NotificationsActionsHandlers
 
 from mod_recent_stat_loader import ModRecentStat
 from mod_recent_stat_logging import logInfo, logError
-
 
 logInfo("Mod initialization is started.")
 
@@ -38,24 +42,45 @@ def formatNew(self, vInfoVO, playerName=None):
     except BaseException:
         logError("Error in formatNew", traceback.format_exc())
 
-    return PlayerFormatResult(result.playerFullName, newPlayerName, result.clanAbbrev, result.regionCode, result.vehicleName)
+    return PlayerFormatResult(result.playerFullName, newPlayerName, result.clanAbbrev, result.regionCode,
+                              result.vehicleName)
 
 
 PlayerFullNameFormatter.format, formatOld = formatNew, PlayerFullNameFormatter.format
 
 
-def nlv_getMessagesListNew(self):
-    result = nlv_getMessagesListOld(self)
+def handleActionNew(self, model, typeID, entityID, actionName):
+    needOpen = False
 
     try:
-        result.insert(0, modRecentStat.getWelcomeMessage())
-        result.insert(1, modRecentStat.getInfoMessage())
+        needOpen = typeID == NOTIFICATION_TYPE.MESSAGE and re.match('https?://', actionName, re.I)
+        if needOpen:
+            BigWorld.wg_openWebBrowser(actionName)
     except BaseException:
-        logError("Error in nlv_getMessagesListNew", traceback.format_exc())
+        logError("Error in handleActionNew", traceback.format_exc())
 
-    return result
+    if not needOpen:
+        handleActionOld(self, model, typeID, entityID, actionName)
 
 
-NotificationListView._NotificationListView__getMessagesList, nlv_getMessagesListOld = nlv_getMessagesListNew, NotificationListView._NotificationListView__getMessagesList
+handleActionOld = NotificationsActionsHandlers.handleAction
+NotificationsActionsHandlers.handleAction = handleActionNew
+
+
+def LobbyView_populateNew(self):
+    LobbyView_populateOld(self)
+
+    try:
+        if not modRecentStat.notificationsShowed:
+            modRecentStat.notificationsShowed = True
+
+            pushMessage(modRecentStat.getWelcomeMessage(), SM_TYPE.Information)
+            pushMessage(modRecentStat.getInfoMessage(), SM_TYPE.Information)
+    except BaseException:
+        logError("Error in LobbyView_populateNew", traceback.format_exc())
+
+
+LobbyView_populateOld = LobbyView._populate
+LobbyView._populate = LobbyView_populateNew
 
 logInfo("Mod initialization is finished.")
