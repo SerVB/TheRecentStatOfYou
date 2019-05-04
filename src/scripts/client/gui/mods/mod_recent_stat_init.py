@@ -63,8 +63,7 @@ def handleActionNew(self, model, typeID, entityID, actionName):
         handleActionOld(self, model, typeID, entityID, actionName)
 
 
-handleActionOld = NotificationsActionsHandlers.handleAction
-NotificationsActionsHandlers.handleAction = handleActionNew
+NotificationsActionsHandlers.handleAction, handleActionOld = handleActionNew, NotificationsActionsHandlers.handleAction
 
 
 def LobbyView_populateNew(self):
@@ -80,7 +79,6 @@ def LobbyView_populateNew(self):
         logError("Error in LobbyView_populateNew", traceback.format_exc())
 
 
-LobbyView_populateOld = LobbyView._populate
-LobbyView._populate = LobbyView_populateNew
+LobbyView._populate, LobbyView_populateOld = LobbyView_populateNew, LobbyView._populate
 
 logInfo("Mod initialization is finished.")
