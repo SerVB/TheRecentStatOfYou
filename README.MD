@@ -18,6 +18,18 @@
 ## Как это выглядит
 На данный момент показ статистики достигается переименованием игроков: к имени добавляется префикс. Префикс настраивается в файле конфигурации.
 
+Также присутствует возможность заменять нашивки.
+
+### Окно загрузки
+Аналогично таблице игроков при нажатии Tab.
+![recent-stat-battle-loading](screenshots/recent-stat-battle-loading.JPG)
+
+### Уши
+![recent-stat-players-panel](screenshots/recent-stat-players-panel.JPG)
+
+### Маркеры
+![recent-stat-markers](screenshots/recent-stat-markers.JPG)
+
 ## Как это работает
 Мод обращается к провайдерам недавней статистики, и если она находится, выводит ее заместо общей статистики.
 
@@ -31,14 +43,16 @@
 ## Далекие планы
 во вкладке "[Issues](https://github.com/SerVB/TheRecentStatOfYou/issues)".
 
-## Скриншоты и скачивание
+## Скачивание
 во вкладке "[Releases](https://github.com/SerVB/TheRecentStatOfYou/releases)".
 
 ## Установка
-Положите файл `.wotmod` в папку `mods/{версия_игры}/`. Для смены стандартных настроек мода скачайте папку `configs` и положите ее в папку `mods/`.
+Положите файлы `.wotmod` в папку `mods/{версия_игры}/`. Для смены стандартных настроек мода скачайте папку `configs` и положите ее в папку `mods/`.
 
 ## Построение из исходников
-Запустите файл `build.py` (рекомендуется версия Питона 2.7.7), исходники соберутся в папке `build/`.
+Запустите файл `build.py`, мод соберется в папке `build/`.
+
+Для сборки мода иконок запустите `badgesModifier/battleBadgesModifier.py`, сохраните полученный в папке `target` файл `PNG` как файл `DDS`, запустите `badgesModifier/build.py`, мод иконок соберется в папке `badgesModifier/build/`.
 
 ## Известные проблемы
 - При начале загрузки боя происходит подвисание от трех до десяти секунд, связанное со скачиванием данных с сайта. Запросы происходят многопоточно, асинхронно и одновременно, поэтому тут вряд ли можно что-то улучшить. Даже если найдется способ получать статистику всех игроков в бою за один запрос, он будет проходить за то же время...
@@ -74,6 +88,18 @@ The mod allows to display statistics in the following places:
 ## How does it look like?
 Currently, statistics are displayed using players renaming: a prefix is added to the name. The prefix can be configured in the configuration file.
 
+Also, there is an opportunity to modify badges.
+
+### Battle loading screen
+Equal to the Tab players panel.
+![recent-stat-battle-loading](screenshots/recent-stat-battle-loading.JPG)
+
+### Battle players panel
+![recent-stat-players-panel](screenshots/recent-stat-players-panel.JPG)
+
+### Markers
+![recent-stat-markers](screenshots/recent-stat-markers.JPG)
+
 ## How does it work?
 Mod asks the providers of recent statistics, and there is an answer, displays recent stats instead of overall statistics.
 
@@ -88,14 +114,16 @@ In the near future, I do not plan to improve the mod, because I have other proje
 ## Planing tasks
 are located in the "[Issues](https://github.com/SerVB/TheRecentStatOfYou/issues)" tab.
 
-## Screenshots and downloads
+## Downloads
 are located in the "[Releases](https://github.com/SerVB/TheRecentStatOfYou/releases)" tab.
 
 ## Installation
-Place the file `.wotmod` into `mods/{game_version}/`. To change default mod settings download the dir `configs` and place it into `mods/`.
+Place the `.wotmod` files into `mods/{game_version}/`. To change default mod settings download the dir `configs` and place it into `mods/`.
 
 ## Build from sources
-Run the file `build.py` (I recommend Python 2.7.7), sources will be built in the dir `build/`.
+Run the `build.py` file, the mod will be built in the `build/` dir.
+
+To build badges modification, run the `badgesModifier/battleBadgesModifier.py` file, save the `PNG` file from `target` dir as a `PNG` file, run the `badgesModifier/build.py` file, the badges modification will be built in the `badgesModifier/build/` dir.
 
 ## Known issues
 - At a battle loading start there is a lag of 3-10 seconds. It's because of data downloading from the Internet. Downloading happens in multiple threads, asynchronously and simultaneously so I think there is nothing to improve. It's the time of a single query completion.
