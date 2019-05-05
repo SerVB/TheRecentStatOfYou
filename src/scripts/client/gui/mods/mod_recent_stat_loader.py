@@ -66,7 +66,7 @@ class ModRecentStat:
         try:
             vehicleInfoTasks = set()
 
-            for _vehicleID, vehicleData in vehicles.iteritems():
+            for _vehicleID, vehicleData in vehicles.items():
                 if "name" in vehicleData and "accountDBID" in vehicleData:
                     playerName = vehicleData["name"]
                     playerId = vehicleData["accountDBID"]
@@ -95,7 +95,7 @@ class ModRecentStat:
         withRecentStat = 0
         withoutStat = 0
 
-        for _vehicleID, vehicleData in vehicles.iteritems():
+        for _vehicleID, vehicleData in vehicles.items():
             if "accountDBID" in vehicleData:
                 playerId = vehicleData["accountDBID"]
 

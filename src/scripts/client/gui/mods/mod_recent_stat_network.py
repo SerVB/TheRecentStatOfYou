@@ -2,7 +2,11 @@
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
 import random
-from urllib2 import urlopen, Request
+import sys
+if "urllib.request" in sys.modules:
+    from urllib.request import urlopen, Request
+else:
+    from urllib2 import urlopen, Request
 
 from mod_recent_stat_string import removeTags
 
@@ -26,7 +30,7 @@ def generateHeaders():
 def getRawSiteText(url, timeout=_DEFAULT_TIMEOUT):
     # type: (str, int) -> str
     req = Request(url, headers=generateHeaders())
-    html = urlopen(req, timeout=timeout).read()
+    html = urlopen(req, timeout=timeout).read().decode("utf-8")
     return html
 
 

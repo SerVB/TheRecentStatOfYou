@@ -39,7 +39,7 @@ class WgStats:
         # type: (dict, dict) -> None
         idsToBeLoaded = set()
 
-        for _vehicleID, vehicleData in vehicles.iteritems():
+        for _vehicleID, vehicleData in vehicles.items():
             if "accountDBID" in vehicleData:
                 playerId = vehicleData["accountDBID"]
 
