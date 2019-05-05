@@ -2,3 +2,5 @@
 build/
 decompiled/
 *.iml
+*.ipr
+*.iws
