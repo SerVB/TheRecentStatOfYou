@@ -123,3 +123,32 @@ class ModRecentStat:
                 return playerName
 
         return playerName
+
+    def getPlayerColorId(self, accountDBID):
+        # type: (int) -> [int, None]
+        """the worst is 0 and the best is 5"""
+        playerInfo = self._playerIdToData.get(accountDBID, None)
+        if playerInfo is None:
+            return None
+
+        wn8 = playerInfo.wn8
+        if wn8 is None:
+            return None
+
+        # https://modxvm.com/en/ratings/xvm-scale/colors/ may 5, 2019:
+        if wn8 < 460:
+            return 0
+
+        if wn8 < 990:
+            return 1
+
+        if wn8 < 1580:
+            return 2
+
+        if wn8 < 2380:
+            return 3
+
+        if wn8 < 3200:
+            return 4
+
+        return 5

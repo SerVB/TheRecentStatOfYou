@@ -1,10 +1,10 @@
 {
   "packageName": "io.github.servb.recent_stat",
   "modVersion": 0,
-  "wotVersion": "1.4.1.1",
+  "wotVersion": "1.5.0.0",
   "buildRoot": "./build/",
   "sourcesRoot": "./src/",
-  "files":
+  "filesToCompile":
   [
     "scripts/client/gui/mods/mod_recent_stat_config.py",
     "scripts/client/gui/mods/mod_recent_stat_config_format.py",
@@ -22,5 +22,6 @@
     "scripts/client/gui/mods/mod_recent_stat_provider_noobmeter.py",
     "scripts/client/gui/mods/mod_recent_stat_string.py",
     "scripts/client/gui/mods/mod_recent_stat_wg_stats.py"
-  ]
+  ],
+  "filesToCopy": []
 }

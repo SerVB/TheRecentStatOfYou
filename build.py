@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+# https://www.apache.org/licenses/LICENSE-2.0.html
 import json
 import py_compile
 import os
@@ -21,16 +23,22 @@ os.makedirs(config["buildRoot"])
 packagedFilePath = config["buildRoot"] + config["packageName"] + "_" + config["wotVersion"] + "-" + str(config["modVersion"]) + ".wotmod"
 
 with zipfile.ZipFile(packagedFilePath, "w", zipfile.ZIP_STORED) as packagedFile:
-    for filePath in config["files"]:
-        assert filePath[-3:] == ".py"
+    for pyFilePath in config["filesToCompile"]:
+        assert pyFilePath[-3:] == ".py"
 
-        sourceFileAbsolutePath = config["sourcesRoot"] + filePath
-        py_compile.compile(sourceFileAbsolutePath)
+        pyFileAbsolutePath = config["sourcesRoot"] + pyFilePath
+        py_compile.compile(pyFileAbsolutePath)
 
-        destinationFilePackagePath = "res/" + filePath + "c"
-        sourceCompiledFileAbsolutePath = sourceFileAbsolutePath + "c"
+        destinationFilePackagePath = "res/" + pyFilePath + "c"
+        sourceCompiledFileAbsolutePath = pyFileAbsolutePath + "c"
         packagedFile.write(sourceCompiledFileAbsolutePath, arcname=destinationFilePackagePath)
         os.remove(sourceCompiledFileAbsolutePath)
 
-print "Files compiled: %d" % len(config["files"])
+    for filePath in config["filesToCopy"]:
+        fileAbsolutePath = config["sourcesRoot"] + filePath
+        destinationFilePackagePath = "res/" + filePath
+        packagedFile.write(fileAbsolutePath, arcname=destinationFilePackagePath)
+
+print "Files compiled: %d" % len(config["filesToCompile"])
+print "Files copied: %d" % len(config["filesToCopy"])
 print "Package compiled: %s" % packagedFilePath

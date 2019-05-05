@@ -5,6 +5,8 @@ import traceback
 import re
 
 import BigWorld
+
+from gui.Scaleform.daapi.view.battle.shared.stats_exchage.vehicle import VehicleInfoComponent
 from gui.battle_control.arena_info.arena_dp import ArenaDataProvider
 from gui.battle_control.arena_info.player_format import PlayerFullNameFormatter, PlayerFormatResult
 from gui.SystemMessages import SM_TYPE, pushMessage
@@ -80,5 +82,30 @@ def LobbyView_populateNew(self):
 
 
 LobbyView._populate, LobbyView_populateOld = LobbyView_populateNew, LobbyView._populate
+
+
+def addVehicleInfoNew(self, vInfoVO, overrides):
+    returnValue = addVehicleInfoOld(self, vInfoVO, overrides)
+
+    try:
+        colorId = modRecentStat.getPlayerColorId(vInfoVO.player.accountDBID)
+
+        if colorId is not None:
+            badgesDict = {
+                "badgeType": "badge_%s" % (10 + colorId),
+            }
+            # TODO: show correct badge (if persists) in center:
+            # if "badgeType" in self._data:
+            #     badgesDict["suffixBadgeType"] = self._data["badgeType"]
+            returnValue = self._data.update(badgesDict)
+        else:
+            self._data.pop("badgeType", None)
+    except BaseException:
+        logError("Error in addVehicleInfoNew", traceback.format_exc())
+
+    return returnValue
+
+
+VehicleInfoComponent.addVehicleInfo, addVehicleInfoOld = addVehicleInfoNew, VehicleInfoComponent.addVehicleInfo
 
 logInfo("Mod initialization is finished.")
