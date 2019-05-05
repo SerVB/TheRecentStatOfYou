@@ -123,7 +123,7 @@ Place the `.wotmod` files into `mods/{game_version}/`. To change default mod set
 ## Build from sources
 Run the `build.py` file, the mod will be built in the `build/` dir.
 
-To build badges modification, run the `badgesModifier/battleBadgesModifier.py` file, save the `PNG` file from `target` dir as a `PNG` file, run the `badgesModifier/build.py` file, the badges modification will be built in the `badgesModifier/build/` dir.
+To build badges modification, run the `badgesModifier/battleBadgesModifier.py` file, save the `PNG` file from `target` dir as a `DDS` file, run the `badgesModifier/build.py` file, the badges modification will be built in the `badgesModifier/build/` dir.
 
 ## Known issues
 - At a battle loading start there is a lag of 3-10 seconds. It's because of data downloading from the Internet. Downloading happens in multiple threads, asynchronously and simultaneously so I think there is nothing to improve. It's the time of a single query completion.
