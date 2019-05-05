@@ -1,0 +1,13 @@
+{
+  "packageName": "io.github.servb.recent_stat_badges",
+  "modVersion": 0,
+  "wotVersion": "1.5.0.0",
+  "buildRoot": "./build/",
+  "sourcesRoot": "./target/",
+  "filesToCompile": [],
+  "filesToCopy":
+  [
+    "gui/flash/atlases/battleAtlas.dds",
+    "gui/flash/atlases/battleAtlas.xml"
+  ]
+}
