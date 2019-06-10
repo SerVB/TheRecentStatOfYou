@@ -101,13 +101,12 @@ Equal to the Tab players panel.
 ![recent-stat-markers](screenshots/recent-stat-markers.JPG)
 
 ## How does it work?
-Mod asks the providers of recent statistics, and there is an answer, displays recent stats instead of overall statistics.
+Mod asks the providers of recent statistics, and if there is an answer, displays recent stats instead of overall statistics.
 
 Data is taken from [kttc.ru](https://kttc.ru/) (permission is granted) и [noobmeter.com](https://noobmeter.com/) (I couldn't contact the site developers so I assume there is no prohibition to use the site).
 
 ## Contribute
-Pull request opening to resolve planning tasks or any other tasks is appreciated.
-Any ideas on development will also be happy to be heard, you can leave your questions and suggestions in the "[Issues](https://github.com/SerVB/TheRecentStatOfYou/issues)" tab.
+Pull request opening to resolve planning tasks or any other tasks is appreciated. Any ideas on development will also be happy to be heard, you can leave your questions and suggestions in the "[Issues](https://github.com/SerVB/TheRecentStatOfYou/issues)" tab.
 
 In the near future, I do not plan to improve the mod, because I have other projects. I myself use the mod in the current state, and it suits me.
 
@@ -118,7 +117,7 @@ are located in the "[Issues](https://github.com/SerVB/TheRecentStatOfYou/issues)
 are located in the "[Releases](https://github.com/SerVB/TheRecentStatOfYou/releases)" tab.
 
 ## Installation
-Place the `.wotmod` files into `mods/{game_version}/`. To change default mod settings download the dir `configs` and place it into `mods/`.
+Place the `.wotmod` files into `mods/{game_version}/`. To change default mod settings, download the dir `configs` and place it into `mods/`.
 
 ## Build from sources
 Run the `build.py` file, the mod will be built in the `build/` dir.
