@@ -11,7 +11,7 @@ colors = {
     "badge_12": (224, 224,   0, 255),  # "yellow"
     "badge_13": (  0, 224,   0, 255),  # "green"
     "badge_14": (  0, 160, 224, 255),  # "cyan"
-    "badge_15": (192,   0, 192, 255),  # "violet"
+    "badge_15": (160,   0, 160, 255),  # "violet"
 }
 
 SRC_XML = "src/gui/flash/atlases/battleAtlas.xml"
@@ -48,7 +48,7 @@ def main():
         rectangle[2] -= dx
         rectangle[1] += dy
         rectangle[3] -= dy
-        draw.ellipse(rectangle, fill=colors[badgeName], outline=(224, 224, 224, 255))
+        draw.ellipse(rectangle, fill=colors[badgeName], outline=(192, 192, 192, 128))
 
     image.save(TARGET_IMAGE)
     copyfile(SRC_XML, TARGET_XML)
