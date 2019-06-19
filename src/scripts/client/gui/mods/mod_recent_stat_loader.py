@@ -131,24 +131,24 @@ class ModRecentStat:
         if playerInfo is None:
             return None
 
-        wn8 = playerInfo.wn8
-        if wn8 is None:
+        xwn8 = playerInfo.xwn8
+        if xwn8 is None:
             return None
 
-        # https://modxvm.com/en/ratings/xvm-scale/colors/ may 5, 2019:
-        if wn8 < 460:
+        # https://modxvm.com/en/ratings/xvm-scale/colors/ june 19, 2019:
+        if xwn8 < 17:
             return 0
 
-        if wn8 < 990:
+        if xwn8 < 34:
             return 1
 
-        if wn8 < 1580:
+        if xwn8 < 53:
             return 2
 
-        if wn8 < 2380:
+        if xwn8 < 76:
             return 3
 
-        if wn8 < 3200:
+        if xwn8 < 93:
             return 4
 
         return 5
