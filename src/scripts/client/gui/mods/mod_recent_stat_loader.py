@@ -116,7 +116,7 @@ class ModRecentStat:
         if playerInfo is not None:
             try:
                 formattedPlayerStat = self._configFormat.playerName.format(**playerInfo.createDict(self._configFormat))
-                newPlayerName = formattedPlayerStat + playerName
+                newPlayerName = formattedPlayerStat
                 return newPlayerName
             except BaseException:
                 logError("Can't format player name", traceback.format_exc())
