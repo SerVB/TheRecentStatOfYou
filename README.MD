@@ -55,7 +55,7 @@
 Для сборки мода иконок запустите `badgesModifier/battleBadgesModifier.py`, сохраните полученный в папке `target` файл `PNG` как файл `DDS`, запустите `badgesModifier/build.py`, мод иконок соберется в папке `badgesModifier/build/`.
 
 ## Известные проблемы
-- При начале загрузки боя происходит подвисание от трех до десяти секунд, связанное со скачиванием данных с сайта. Запросы происходят многопоточно, асинхронно и одновременно, поэтому тут вряд ли можно что-то улучшить. Даже если найдется способ получать статистику всех игроков в бою за один запрос, он будет проходить за то же время...
+- Если использовать возможность показа недавней статистики, то на экране загрузки загрузки боя можно заметить подвисание от трех до десяти секунд, связанное со скачиванием относительно большого объема данных с сайта провайдера недавней статистики. Починить это вряд ли возможно: скорость загрузки ограничена скоростью сайта-провайдера.
 - Клиент иногда пишет в лог, что не может найти ник игрока и поэтому использует более медленный вариант поиска. Наверное, это связано с тем, что мод фактически переименовывает игроков. Пока видимых симптомов в клиенте игры не замечено. Но с обновлением клиента это может стать причиной вылетов, если не полной неработоспособности...
 
 ## FAQ
@@ -77,7 +77,7 @@
 An open-source mod displaying players' recent statistics in battle.
 
 ## Idea
-The main difference of this mod from similar is the ability to display more informative **recent** efficiency rating (approximately of the last thousand battles, that is, of the last 50 hours of playing time). Otherwise, this is the same mod that you saw from *XVM*, *PolarFox* and *Ekspoint*.
+The main difference of this mod from similar is the ability to display more informative **recent** efficiency rating (approximately of the last thousand battles, that is, of the last 50 hours of playing time). Otherwise, this is the same mod that you saw from *XVM*, *PolarFox* and, *Ekspoint*.
 
 The mod allows to display statistics in the following places:
 - On the battle loading screen.
@@ -101,14 +101,14 @@ Equal to the Tab players panel.
 ![recent-stat-markers](screenshots/recent-stat-markers.JPG)
 
 ## How does it work?
-Mod asks the providers of recent statistics, and if there is an answer, displays recent stats instead of overall statistics.
+Mod asks the providers of recent statistics, and if there is an answer, it displays recent stats instead of overall statistics.
 
 Data is taken from [kttc.ru](https://kttc.ru/) (permission is granted) и [noobmeter.com](https://noobmeter.com/) (I couldn't contact the site developers so I assume there is no prohibition to use the site).
 
 ## Contribute
 Pull request opening to resolve planning tasks or any other tasks is appreciated. Any ideas on development will also be happy to be heard, you can leave your questions and suggestions in the "[Issues](https://github.com/SerVB/TheRecentStatOfYou/issues)" tab.
 
-In the near future, I do not plan to improve the mod, because I have other projects. I myself use the mod in the current state, and it suits me.
+In the near future, I do not plan to improve the mod, because I have other projects. I use the mod in the current state, and it suits me.
 
 ## Planing tasks
 are located in the "[Issues](https://github.com/SerVB/TheRecentStatOfYou/issues)" tab.
@@ -117,7 +117,7 @@ are located in the "[Issues](https://github.com/SerVB/TheRecentStatOfYou/issues)
 are located in the "[Releases](https://github.com/SerVB/TheRecentStatOfYou/releases)" tab.
 
 ## Installation
-Place the `.wotmod` files into `mods/{game_version}/`. To change default mod settings, download the dir `configs` and place it into `mods/`.
+Place the `.wotmod` files into `mods/{game_version}/`. To change default mod settings, download the `configs` dir and place it into `mods/`.
 
 ## Build from sources
 Run the `build.py` file, the mod will be built in the `build/` dir.
@@ -125,12 +125,12 @@ Run the `build.py` file, the mod will be built in the `build/` dir.
 To build badges modification, run the `badgesModifier/battleBadgesModifier.py` file, save the `PNG` file from `target` dir as a `DDS` file, run the `badgesModifier/build.py` file, the badges modification will be built in the `badgesModifier/build/` dir.
 
 ## Known issues
-- At a battle loading start there is a lag of 3-10 seconds. It's because of data downloading from the Internet. Downloading happens in multiple threads, asynchronously and simultaneously so I think there is nothing to improve. It's the time of a single query completion.
-- Sometimes there are messages in the log like "can't find player name, use slow search". Maybe it's because the mod just renames players. There is no symptoms have been noticed. Anyway, in future game versions it can became a problem...
+- If you use the recent stat feature, at a battle loading start you can notice a lag of 3-10 seconds. It's because of the relatively big amount of data downloading from the Internet. I think there is no possible fix because speed is restricted by the provider.
+- Sometimes there are messages in the log like "can't find player name, use slow search". Maybe it's because the mod just renames players. There is no symptoms have been noticed. Anyway, in future game versions, it can become a problem...
 
 ## FAQ
 **Q**. The mod isn't adopted for a new World of Tanks version.
-**A**. Check `mod_recent_stat_init.py` for the list of modified files. Find the same files in game decompiled sources [WorldOfTanks-Decompiled](https://github.com/StranikS-Scan/WorldOfTanks-Decompiled/). If they haven't been changed, it's likely the mod will work. It's only needed to put the mod in the new dir. For example, the mod was working after update from 1.1 to 1.2.
+**A**. Check `mod_recent_stat_init.py` for the list of modified files. Find the same files in the game decompiled sources [WorldOfTanks-Decompiled](https://github.com/StranikS-Scan/WorldOfTanks-Decompiled/). If they haven't been changed, it's likely the mod will work. It's only needed to put the mod in the new dir. For example, the mod was working after an update from 1.1 to 1.2.
 
 **Q**. Which clusters are supported?  
 **A**. All clusters should be supported. Try to change it in `config_main.json`.
