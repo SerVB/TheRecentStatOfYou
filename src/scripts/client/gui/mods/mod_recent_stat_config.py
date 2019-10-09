@@ -10,16 +10,16 @@ from mod_recent_stat_logging import logError, logInfo
 class Config:
     __metaclass__ = ABCMeta
 
-    _defaultConfigPath = "no path"
+    _defaultConfigPaths = ("no path",)
 
-    def errorCantFindFile(self):
+    def warnCantFindFiles(self):
         # type: () -> None
-        logError("Can't open config %s" % self._defaultConfigPath, traceback.format_exc())
+        logInfo("Can't open configs %s" % self._defaultConfigPaths)
 
     def warnNoAttribute(self, attributeName):
         # type: (str) -> None
-        logInfo('No attribute "%s" in config "%s"' % (attributeName, self._defaultConfigPath))
+        logInfo('No attribute "%s" in config "%s"' % (attributeName, self._defaultConfigPaths))
 
     def warnInvalidAttribute(self, attributeName, value, expectedValues):
         # type: (str, str, str) -> None
-        logInfo('In config "%s": attribute "%s" has an invalid value "%s". Possible values: %s.' % (self._defaultConfigPath, attributeName, value, expectedValues))
+        logInfo('In config "%s": attribute "%s" has an invalid value "%s". Possible values: %s.' % (self._defaultConfigPaths, attributeName, value, expectedValues))

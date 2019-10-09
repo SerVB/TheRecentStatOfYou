@@ -5,11 +5,14 @@ from mod_recent_stat_config import Config
 
 
 class ConfigWgId(Config):
-    _defaultConfigPath = "mods/configs/io.github.servb.recent_stat/wg_api_application_id.txt"
+    _defaultConfigPaths = (
+        "mods/configs/io.github.servb.recent_stat/wg_api_application_id.txt",
+        "../mods/configs/io.github.servb.recent_stat/wg_api_application_id.txt",
+    )
 
-    def __init__(self, configPath=_defaultConfigPath):
-        # type: (str) -> None
-        self._configPath = configPath
+    def __init__(self, configPaths=_defaultConfigPaths):
+        # type: (tuple) -> None
+        self._configPaths = configPaths
         self.wgId = self._defaultWgId()
         self.load()
 
@@ -20,8 +23,13 @@ class ConfigWgId(Config):
 
     def load(self):
         # type: () -> None
-        try:
-            with open(self._configPath, "r") as configFile:
-                self.wgId = configFile.readline().strip()
-        except IOError:
-            self.errorCantFindFile()
+        anyLoaded = True
+        for configPath in self._configPaths:
+            try:
+                with open(configPath, "r") as configFile:
+                    self.wgId = configFile.readline().strip()
+            except IOError:
+                pass
+
+        if not anyLoaded:
+            self.warnCantFindFiles()

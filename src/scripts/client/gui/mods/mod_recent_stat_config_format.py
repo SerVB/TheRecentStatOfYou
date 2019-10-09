@@ -9,35 +9,43 @@ from mod_recent_stat_string import removeComments
 
 
 class ConfigFormat(Config):
-    _defaultConfigPath = "mods/configs/io.github.servb.recent_stat/config_format.json"
+    _defaultConfigPaths = (
+        "mods/configs/io.github.servb.recent_stat/config_format.json",
+        "../mods/configs/io.github.servb.recent_stat/config_format.json",
+    )
 
     _defaultPlayerName = "{xwn8} {kb}k "
     _defaultNoInfo = "--"
 
-    def __init__(self, configPath=_defaultConfigPath):
-        # type: (str) -> None
-        self._configPath = configPath
+    def __init__(self, configPaths=_defaultConfigPaths):
+        # type: (tuple) -> None
+        self._configPaths = configPaths
         self.playerName = self._defaultPlayerName
         self.noInfo = self._defaultNoInfo
-        self.load()
+        self._load()
 
-    def load(self):
+    def _load(self):
         # type: () -> None
-        try:
-            with open(self._configPath, "r") as configFile:
-                configJson = json.loads(removeComments(configFile.read()))
+        anyLoaded = True
+        for configPath in self._configPaths:
+            try:
+                with open(configPath, "r") as configFile:
+                    configJson = json.loads(removeComments(configFile.read()))
 
-                if CONFIG_FORMAT.PLAYER_NAME in configJson:
-                    self.playerName = configJson[CONFIG_FORMAT.PLAYER_NAME]
-                else:
-                    self.warnNoAttribute(CONFIG_FORMAT.PLAYER_NAME)
+                    if CONFIG_FORMAT.PLAYER_NAME in configJson:
+                        self.playerName = configJson[CONFIG_FORMAT.PLAYER_NAME]
+                    else:
+                        self.warnNoAttribute(CONFIG_FORMAT.PLAYER_NAME)
 
-                if CONFIG_FORMAT.NO_INFO in configJson:
-                    self.noInfo = configJson[CONFIG_FORMAT.NO_INFO]
-                else:
-                    self.warnNoAttribute(CONFIG_FORMAT.NO_INFO)
-        except IOError:
-            self.errorCantFindFile()
+                    if CONFIG_FORMAT.NO_INFO in configJson:
+                        self.noInfo = configJson[CONFIG_FORMAT.NO_INFO]
+                    else:
+                        self.warnNoAttribute(CONFIG_FORMAT.NO_INFO)
+            except IOError:
+                pass
+
+        if not anyLoaded:
+            self.warnCantFindFiles()
 
     def __str__(self):
         # type: () -> str
