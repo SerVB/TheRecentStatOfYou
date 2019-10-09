@@ -17,8 +17,8 @@ class ConfigMain(Config):
     )
 
     _defaultRegion = "ru"
-    _defaultTimeout = 10
-    _defaultRecentStatProviderNames = (STAT_PROVIDER.KTTC, STAT_PROVIDER.NOOBMETER)
+    _defaultTimeout = 7
+    _defaultRecentStatProviderNames = (STAT_PROVIDER.KTTC,)
 
     def __init__(self, configPaths=_defaultConfigPaths):
         # type: (tuple) -> None
