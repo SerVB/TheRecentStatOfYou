@@ -8,7 +8,7 @@ import BigWorld
 
 from gui.Scaleform.daapi.view.battle.shared.stats_exchage.vehicle import VehicleInfoComponent
 from gui.battle_control.arena_info.arena_dp import ArenaDataProvider
-from gui.battle_control.arena_info.player_format import PlayerFullNameFormatter, PlayerFormatResult
+from gui.battle_control.arena_info.player_format import PlayerFullNameFormatter, _PlayerFormatResult
 from gui.SystemMessages import SM_TYPE, pushMessage
 from gui.Scaleform.daapi.view.lobby.LobbyView import LobbyView
 from notification.settings import NOTIFICATION_TYPE
@@ -44,8 +44,8 @@ def formatNew(self, vInfoVO, playerName=None):
     except BaseException:
         logError("Error in formatNew", traceback.format_exc())
 
-    return PlayerFormatResult(result.playerFullName, newPlayerName, result.clanAbbrev, result.regionCode,
-                              result.vehicleName)
+    return _PlayerFormatResult(result.playerFullName, newPlayerName, result.playerFakeName, result.clanAbbrev,
+                               result.regionCode, result.vehicleName)
 
 
 PlayerFullNameFormatter.format, formatOld = formatNew, PlayerFullNameFormatter.format

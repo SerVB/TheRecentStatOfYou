@@ -7,7 +7,7 @@ import traceback
 from mod_recent_stat_config_main import ConfigMain
 from mod_recent_stat_config_wg_id import ConfigWgId
 from mod_recent_stat_container import PlayerData
-from mod_recent_stat_converter import formatBattlesToKiloBattles, getXWN8
+from mod_recent_stat_converter import formatBattlesToKiloBattles, getXWN8, isPlayerFake
 from mod_recent_stat_logging import logError
 from mod_recent_stat_network import getJsonText
 
@@ -43,7 +43,7 @@ class WgStats:
             if "accountDBID" in vehicleData:
                 playerId = vehicleData["accountDBID"]
 
-                if playerId in playerIdToData:
+                if playerId in playerIdToData or isPlayerFake(playerId):
                     continue
 
                 idsToBeLoaded.add(playerId)

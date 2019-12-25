@@ -8,6 +8,7 @@ import traceback
 from mod_recent_stat_config_format import ConfigFormat
 from mod_recent_stat_config_main import ConfigMain
 from mod_recent_stat_config_wg_id import ConfigWgId
+from mod_recent_stat_converter import isPlayerFake
 from mod_recent_stat_logging import logInfo, logError
 from mod_recent_stat_wg_stats import WgStats
 
@@ -112,6 +113,9 @@ class ModRecentStat:
 
     def formatPlayerName(self, accountDBID, playerName):
         # type: (int, str) -> str
+        if isPlayerFake(accountDBID):
+            return "? %s" % playerName  # TODO move to config_format
+
         playerInfo = self._playerIdToData.get(accountDBID, None)
         if playerInfo is not None:
             try:
