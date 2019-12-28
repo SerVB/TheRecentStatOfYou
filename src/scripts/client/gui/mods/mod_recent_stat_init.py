@@ -37,14 +37,16 @@ ArenaDataProvider.buildVehiclesData, buildVehiclesDataOld = buildVehiclesDataNew
 def formatNew(self, vInfoVO, playerName=None):
     result = formatOld(self, vInfoVO, playerName)
     newPlayerName = result.playerName
+    newPlayerFakeName = result.playerFakeName
 
     try:
         accountDBID = vInfoVO.player.accountDBID
         newPlayerName = modRecentStat.formatPlayerName(accountDBID, result.playerName)
+        newPlayerFakeName = modRecentStat.formatPlayerName(accountDBID, result.playerFakeName)
     except BaseException:
         logError("Error in formatNew", traceback.format_exc())
 
-    return _PlayerFormatResult(result.playerFullName, newPlayerName, result.playerFakeName, result.clanAbbrev,
+    return _PlayerFormatResult(result.playerFullName, newPlayerName, newPlayerFakeName, result.clanAbbrev,
                                result.regionCode, result.vehicleName)
 
 
