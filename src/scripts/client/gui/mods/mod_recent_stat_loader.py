@@ -30,6 +30,8 @@ class ModRecentStat:
         self._welcomeMessage = self._loadWelcomeMessage()
         self._infoMessage = self._loadInfoMessage()
 
+        self._isAnonymousHost = False
+
         logInfo("Mod loading is finished: main = %s, format = %s." % (self._configMain, self._configFormat))
 
     def getWelcomeMessage(self):
@@ -59,8 +61,19 @@ class ModRecentStat:
                        "format = %s"
                ) % (self._configMain, self._configFormat)
 
+    def _checkIfHostIsAnonymous(self, vehicles):
+        # type: (dict) -> None
+        try:
+            for _vehicleID, vehicleData in vehicles.items():
+                if vehicleData["name"] != vehicleData["fakeName"]:
+                    self._isAnonymousHost = True
+        except BaseException:
+            logError("Can't check if host is anonymous.", traceback.format_exc())
+
     def loadPlayerDataByVehicleList(self, vehicles):
         # type: (dict) -> None
+        self._checkIfHostIsAnonymous(vehicles)
+
         startTime = time.time()
         self._wgStats.loadPlayerDataByVehicleList(vehicles, self._playerIdToData)
 
@@ -113,6 +126,9 @@ class ModRecentStat:
 
     def formatPlayerName(self, accountDBID, playerName):
         # type: (int, str) -> str
+        if self._isAnonymousHost:
+            return "? %s" % playerName  # TODO move to config_format
+
         if isPlayerFake(accountDBID):
             return "? %s" % playerName  # TODO move to config_format
 
@@ -131,6 +147,9 @@ class ModRecentStat:
     def getPlayerColorId(self, accountDBID):
         # type: (int) -> [int, None]
         """the worst is 0 and the best is 5"""
+        if self._isAnonymousHost:
+            return None  # todo: don't clear badges in such situation
+
         playerInfo = self._playerIdToData.get(accountDBID, None)
         if playerInfo is None:
             return None
