@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # https://www.apache.org/licenses/LICENSE-2.0.html
 
+import sys
 from threading import Thread
 import time
 import traceback
@@ -19,6 +20,7 @@ class ModRecentStat:
     def __init__(self, configFormat=None, configMain=None, configWgId=None):
         # type: (ConfigFormat, ConfigMain, ConfigWgId) -> None
         logInfo("Mod loading is started.")
+        logInfo("Python version: %s." % sys.version)
 
         self._configFormat = configFormat or ConfigFormat()
         self._configMain = configMain or ConfigMain()
