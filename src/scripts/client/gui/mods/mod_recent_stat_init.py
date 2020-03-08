@@ -95,14 +95,26 @@ try:
 
             if colorId is not None:
                 badgesDict = {
-                    "badgeType": "badge_%s" % (10 + colorId),
+                    "hasSelectedBadge": True,
+                    "badge": {
+                        "content": None,
+                        "sizeContent": "24x24",
+                        "isDynamic": False,
+                        "isAtlasSource": True,
+                        "icon": "badge_%s" % (10 + colorId),
+                    },
                 }
                 # TODO: show correct badge (if persists) in center:
                 # if "badgeType" in self._data:
                 #     badgesDict["suffixBadgeType"] = self._data["badgeType"]
                 returnValue = self._data.update(badgesDict)
             else:
-                self._data.pop("badgeType", None)
+                self._data.update(
+                    {
+                        "hasSelectedBadge": False,
+                    }
+                )
+                self._data.pop("badge", None)
         except BaseException:
             logError("Error in addVehicleInfoNew", traceback.format_exc())
 
