@@ -13,4 +13,4 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@master
       - name: Build recent-stat
-        run: python build.py
+        run: python2 build.py
