@@ -12,6 +12,11 @@ colors = {
     "badge_13": (  0, 224,   0, 255),  # "green"
     "badge_14": (  0, 160, 224, 255),  # "cyan"
     "badge_15": (160,   0, 160, 255),  # "violet"
+
+    "badge_20": (204,  51, 153, 255),  # "pink"
+    "badge_21": (  0, 224,   0, 255),  # "green"
+    "badge_22": (224, 224,   0, 255),  # "yellow"
+    "badge_23": (  0, 160, 224, 255),  # "cyan"
 }
 
 SRC_XML = "src/gui/flash/atlases/battleAtlas.xml"
