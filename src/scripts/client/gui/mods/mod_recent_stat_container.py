@@ -10,6 +10,7 @@ class PlayerData(object):
     kb = None  # type: [int, None]
     wn8 = None  # type: [int, None]
     xwn8 = None  # type: [int, None]
+    achievements = dict()  # type: dict
 
     hasRecentStat = False  # type: bool
 

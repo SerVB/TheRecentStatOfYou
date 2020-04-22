@@ -24,8 +24,15 @@ class CONFIG_MAIN(object):
     REGION = "region"
     TIMEOUT = "timeout"
     RECENT_STAT_PROVIDERS = "recentStatProviders"
+    BADGE_TYPE = "badgeType"
 
 
 class CONFIG_FORMAT(object):
     PLAYER_NAME = "playerName"
     NO_INFO = "noInfo"
+
+
+class BADGE_TYPE(object):
+    XWN8_COLOR = "xwn8Color"
+    BOB2020_TEAM_COLOR = "bob2020TeamColor"
+    # todo: add option to disable badges modification

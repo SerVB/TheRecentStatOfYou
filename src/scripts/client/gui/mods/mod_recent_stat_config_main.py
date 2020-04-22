@@ -4,7 +4,7 @@
 import json
 
 from mod_recent_stat_config import Config
-from mod_recent_stat_constant import CONFIG_MAIN, STAT_PROVIDER
+from mod_recent_stat_constant import BADGE_TYPE, CONFIG_MAIN, STAT_PROVIDER
 from mod_recent_stat_provider_kttc import Kttc
 from mod_recent_stat_provider_noobmeter import Noobmeter
 from mod_recent_stat_string import removeComments
@@ -19,6 +19,7 @@ class ConfigMain(Config):
     _defaultRegion = "ru"
     _defaultTimeout = 7
     _defaultRecentStatProviderNames = (STAT_PROVIDER.KTTC,)
+    _defaultBadgeType = BADGE_TYPE.XWN8_COLOR
 
     def __init__(self, configPaths=_defaultConfigPaths):
         # type: (tuple) -> None
@@ -26,6 +27,7 @@ class ConfigMain(Config):
         self.region = self._defaultRegion
         self.timeout = self._defaultTimeout
         self._recentStatProviderNames = self._defaultRecentStatProviderNames
+        self.badgeType = self._defaultBadgeType
         self._load()
 
         self.recentStatProviders = self.createProviders(self._recentStatProviderNames)
@@ -63,6 +65,11 @@ class ConfigMain(Config):
                             self._recentStatProviderNames = validProviders
                     else:
                         self.warnNoAttribute(CONFIG_MAIN.RECENT_STAT_PROVIDERS)
+
+                    if CONFIG_MAIN.BADGE_TYPE in configJson:
+                        self.badgeType = configJson[CONFIG_MAIN.BADGE_TYPE]
+                    else:
+                        self.warnNoAttribute(CONFIG_MAIN.BADGE_TYPE)
             except IOError:
                 pass
 
@@ -76,4 +83,4 @@ class ConfigMain(Config):
 
     def __str__(self):
         # type: () -> str
-        return "{region='%s', timeout=%s, providerNames=%s}" % (self.region, self.timeout, list(map(lambda provider: provider.name, self.recentStatProviders)))
+        return "{region='%s', timeout=%s, providerNames=%s, badgeType='%s'}" % (self.region, self.timeout, list(map(lambda provider: provider.name, self.recentStatProviders)), self.badgeType)

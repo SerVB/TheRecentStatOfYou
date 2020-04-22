@@ -15,6 +15,7 @@ from mod_recent_stat_network import getJsonText
 class WgStats:
     _ACCOUNT_INFO_URL = "https://api.worldoftanks.{region}/wot/account/info/?application_id={appId}&fields=statistics.all.battles%2Cstatistics.all.wins%2Cstatistics.all.damage_dealt%2Cstatistics.all.frags%2Cstatistics.all.spotted%2Cstatistics.all.capture_points%2Cstatistics.all.dropped_capture_points&account_id={joinedIds}"
     _ACCOUNT_TANK_URL = "https://api.worldoftanks.{region}/wot/account/tanks/?application_id={appId}&fields=statistics.battles%2Ctank_id&account_id={joinedIds}"
+    _ACCOUNT_ACHIEVEMENTS_URL = "https://api.worldoftanks.{region}/wot/account/achievements/?application_id={appId}&fields=achievements&account_id={joinedIds}"
 
     def __init__(self, configMain, configWgId):
         # type: (ConfigMain, ConfigWgId) -> None
@@ -62,9 +63,13 @@ class WgStats:
         accountsTanksUrl = self._ACCOUNT_TANK_URL \
             .format(region=self._configMain.region, appId=self._configWgId.wgId, joinedIds=joinedIds)
 
+        accountsAchievementsUrl = self._ACCOUNT_ACHIEVEMENTS_URL \
+            .format(region=self._configMain.region, appId=self._configWgId.wgId, joinedIds=joinedIds)
+
         try:
             accountsInfo = json.loads(getJsonText(accountsInfoUrl, self._configMain.timeout)).get("data", None)
             accountsTanks = json.loads(getJsonText(accountsTanksUrl, self._configMain.timeout)).get("data", None)
+            accountsAchievements = json.loads(getJsonText(accountsAchievementsUrl, self._configMain.timeout)).get("data", None)
         except BaseException:
             logError("Error loading statistics...", traceback.format_exc())
         else:
@@ -80,6 +85,9 @@ class WgStats:
                         playerData.kb = formatBattlesToKiloBattles(battles)
                         playerData.wn8 = None
                         playerData.xwn8 = None
+
+                        if strPlayerId in accountsAchievements:
+                            playerData.achievements = accountsAchievements[strPlayerId]["achievements"]
 
                         if strPlayerId in accountsTanks and battles != 0:
                             floatBattles = float(battles)

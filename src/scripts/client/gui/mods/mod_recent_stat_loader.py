@@ -10,6 +10,7 @@ from mod_recent_stat_config_format import ConfigFormat
 from mod_recent_stat_config_main import ConfigMain
 from mod_recent_stat_config_wg_id import ConfigWgId
 from mod_recent_stat_converter import isPlayerFake
+from mod_recent_stat_constant import BADGE_TYPE
 from mod_recent_stat_logging import logInfo, logError
 from mod_recent_stat_wg_stats import WgStats
 
@@ -146,7 +147,21 @@ class ModRecentStat:
 
         return playerName
 
-    def getPlayerColorId(self, accountDBID):
+    def getPlayerBadgeIcon(self, accountDBID):
+        if self._configMain.badgeType == BADGE_TYPE.BOB2020_TEAM_COLOR:
+            teamId = self._getPlayerBob2020TeamId(accountDBID)
+            if teamId is None:
+                return None
+
+            return "badge_%s" % (20 + teamId)
+
+        colorId = self._getPlayerColorId(accountDBID)
+        if colorId is None:
+            return None
+
+        return "badge_%s" % (10 + colorId)
+
+    def _getPlayerColorId(self, accountDBID):
         # type: (int) -> [int, None]
         """the worst is 0 and the best is 5"""
         if self._isAnonymousHost:
@@ -177,3 +192,32 @@ class ModRecentStat:
             return 4
 
         return 5
+
+    def _getPlayerBob2020TeamId(self, accountDBID):
+        # type: (int) -> [int, None]
+        if self._isAnonymousHost:
+            return None  # todo: don't clear badges in such situation
+
+        playerInfo = self._playerIdToData.get(accountDBID, None)
+        if playerInfo is None:
+            return None
+
+        achievements = playerInfo.achievements
+        if achievements is None:
+            return None
+
+        # the numbers are in sync with badges modifier:
+
+        if "medalBobKorbenDallas" in achievements.keys():
+            return 0
+
+        if "medalBobAmway921" in achievements.keys():
+            return 1
+
+        if "medalBobLebwa" in achievements.keys():
+            return 2
+
+        if "medalBobYusha" in achievements.keys():
+            return 3
+
+        return None

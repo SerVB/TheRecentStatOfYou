@@ -32,5 +32,18 @@
   /* [] */ /* <-- Не загружать недавнюю стату. */
   /* ["kttc"] */ /* <-- Использовать одного провайдера. */
   /* ["kttc", "noobmeter"] */ /* <-- Использовать несколько провайдеров. */
-  "recentStatProviders": ["kttc"]
+  "recentStatProviders": ["kttc"],
+
+  /* Badge modifier setting. Type: string. */
+  /* Available providers: "bob2020TeamColor", "xwn8Color". */
+  /* Examples: */
+  /* "bob2020TeamColor" */ /* <-- Team color in Battle of Bloggers 2020 (ru region). */
+  /* "xwn8Color" */ /* <-- XWN8 color. */
+
+  /* Настройка модификации нашивок. Тип: строка. */
+  /* Доступные варианты: "bob2020TeamColor", "xwn8Color". */
+  /* Примеры: */
+  /* "bob2020TeamColor" */ /* <-- Цвет команды в Битве Блогеров 2020 (ru сегмент). */
+  /* "xwn8Color" */ /* <-- Цвет XWN8. */
+  "badgeType": "xwn8Color"
 }

@@ -91,9 +91,9 @@ try:
         returnValue = addVehicleInfoOld(self, vInfoVO, overrides)
 
         try:
-            colorId = modRecentStat.getPlayerColorId(vInfoVO.player.accountDBID)
+            badgeIcon = modRecentStat.getPlayerBadgeIcon(vInfoVO.player.accountDBID)
 
-            if colorId is not None:
+            if badgeIcon is not None:
                 badgesDict = {
                     "hasSelectedBadge": True,
                     "badge": {
@@ -101,7 +101,7 @@ try:
                         "sizeContent": "24x24",
                         "isDynamic": False,
                         "isAtlasSource": True,
-                        "icon": "badge_%s" % (10 + colorId),
+                        "icon": badgeIcon,
                     },
                 }
                 # TODO: show correct badge (if persists) in center:

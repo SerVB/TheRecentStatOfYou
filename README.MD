@@ -18,7 +18,9 @@
 ## Как это выглядит
 На данный момент показ статистики достигается переименованием игроков: к имени добавляется префикс. Префикс настраивается в файле конфигурации.
 
-Также присутствует возможность заменять нашивки.
+Также присутствует возможность заменять нашивки – на данный момент есть два варианта:
+- Цвет XWN8 (по умолчанию).
+- Цвет команды в Битве Блогеров 2020.
 
 ### Окно загрузки
 Аналогично таблице игроков при нажатии Tab.
@@ -68,6 +70,9 @@
 **Q**. Как поменять провайдера недавней статистики или полностью отключить возможность показа недавней статы?  
 **A**. В конфиге `config_main.json`.
 
+**Q**. Как полностью отключить показ статистики, но оставить информацию о блогерах?  
+**A**. В `config_main.json` выберите `"badgeType": "bob2020TeamColor"` и в `config_format.json` выберите `"playerName": ""`.
+
 ## Благодарности
 [ATTRIBUTIONS.MD](ATTRIBUTIONS.MD).
 
@@ -88,7 +93,9 @@ The mod allows to display statistics in the following places:
 ## How does it look like?
 Currently, statistics are displayed using players renaming: a prefix is added to the name. The prefix can be configured in the configuration file.
 
-Also, there is an opportunity to modify badges.
+Also, there is an opportunity to modify badges – currently, two variants are available:
+- XWN8 color (default).
+- Team color in Battle of Bloggers 2020.
 
 ### Battle loading screen
 Equal to the Tab players panel.
@@ -137,6 +144,9 @@ To build badges modification, run the `badgesModifier/battleBadgesModifier.py` f
 
 **Q**. How to change providers of recent stat or completely disable the recent stat feature?  
 **A**. In `config_main.json`.
+
+**Q**. How to completely disable statistics, but leave info about bloggers?  
+**A**. In `config_main.json` choose `"badgeType": "bob2020TeamColor"` and in `config_format.json` choose `"playerName": ""`.
 
 ## Attributions
 [ATTRIBUTIONS.MD](ATTRIBUTIONS.MD).
