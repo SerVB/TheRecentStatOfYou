@@ -7,7 +7,7 @@
 Мод с открытым исходным кодом для отображения недавней статистики игроков в бою.
 
 ## Суть
-Главное отличие этого мода от аналогичных &mdash; это возможность отображения обещающего быть более информативным **недавнего** рейтинга эффективности (примерно за последнюю тысячу боев, то есть примерно за последние 50 часов игрового времени). В остальном это всe тот же мод, который Вы видели у *XVM*, *PolarFox* и *Ekspoint*.
+Главное отличие этого мода от аналогичных &mdash; это возможность отображения обещающего быть более информативным **недавнего** рейтинга эффективности (примерно за последнюю тысячу боев, то есть примерно за последние 50 часов игрового времени). В остальном это все тот же мод, который Вы видели у *XVM*, *PolarFox* и *Ekspoint*.
 
 Мод позволяет отображать недавнюю статистику игроков в следующих местах:
 - В окне загрузки боя.
@@ -33,14 +33,14 @@
 ![recent-stat-markers](screenshots/recent-stat-markers.JPG)
 
 ## Как это работает
-Мод обращается к провайдерам недавней статистики, и если она находится, выводит ее заместо общей статистики.
+Мод обращается к провайдерам недавней статистики, и если она находится, выводит ее вместо общей статистики.
 
 Данные берутся с сайтов [kttc.ru](https://kttc.ru/) (разрешение на использование от представителя сайта получено) и [noobmeter.com](https://noobmeter.com/) (связаться с представителем сайта не удалось, поэтому пока считаем, что запрета на использование сайта нет).
 
 ## Внести вклад
 Открытие Pull Request'ов, решающих как планируемые задачи, так и любые другие, приветствуется. Любые идеи по развитию также с радостью будут услышаны, Вы можете оставить свои вопросы и предложения во вкладке "[Issues](https://github.com/SerVB/TheRecentStatOfYou/issues)".
 
-В ближайшее время я улучшать мод не планирую, ведь у меня есть другие проекты. Сам использую мод в текущем состоянии, и это меня устраивает.
+В ближайшее время я не планирую улучшать мод, ведь у меня есть другие проекты. Сам использую мод в текущем состоянии, и это меня устраивает.
 
 ## Далекие планы
 во вкладке "[Issues](https://github.com/SerVB/TheRecentStatOfYou/issues)".
@@ -57,7 +57,7 @@
 Для сборки мода иконок запустите `badgesModifier/battleBadgesModifier.py`, сохраните полученный в папке `target` файл `PNG` как файл `DDS`, запустите `badgesModifier/build.py`, мод иконок соберется в папке `badgesModifier/build/`.
 
 ## Известные проблемы
-- Если использовать возможность показа недавней статистики, то на экране загрузки загрузки боя можно заметить подвисание от трех до десяти секунд, связанное со скачиванием относительно большого объема данных с сайта провайдера недавней статистики. Починить это вряд ли возможно: скорость загрузки ограничена скоростью сайта-провайдера.
+- Если использовать возможность показа недавней статистики, то на экране загрузки боя можно заметить подвисание от трех до десяти секунд, связанное со скачиванием относительно большого объема данных с сайта провайдера недавней статистики. Починить это вряд ли возможно: скорость загрузки ограничена скоростью сайта-провайдера.
 - Клиент иногда пишет в лог, что не может найти ник игрока и поэтому использует более медленный вариант поиска. Наверное, это связано с тем, что мод фактически переименовывает игроков. Пока видимых симптомов в клиенте игры не замечено. Но с обновлением клиента это может стать причиной вылетов, если не полной неработоспособности...
 
 ## FAQ
@@ -84,7 +84,7 @@ An open-source mod displaying players' recent statistics in battle.
 ## Idea
 The main difference of this mod from similar is the ability to display more informative **recent** efficiency rating (approximately of the last thousand battles, that is, of the last 50 hours of playing time). Otherwise, this is the same mod that you saw from *XVM*, *PolarFox* and, *Ekspoint*.
 
-The mod allows to display statistics in the following places:
+The mod allows displaying statistics in the following places:
 - On the battle loading screen.
 - On the battle players panel.
 - In markers.
@@ -110,7 +110,7 @@ Equal to the Tab players panel.
 ## How does it work?
 Mod asks the providers of recent statistics, and if there is an answer, it displays recent stats instead of overall statistics.
 
-Data is taken from [kttc.ru](https://kttc.ru/) (permission is granted) и [noobmeter.com](https://noobmeter.com/) (I couldn't contact the site developers so I assume there is no prohibition to use the site).
+Data is taken from [kttc.ru](https://kttc.ru/) (permission is granted) и [noobmeter.com](https://noobmeter.com/) (I couldn't contact the site developers, so I assume there is no prohibition to use the site).
 
 ## Contribute
 Pull request opening to resolve planning tasks or any other tasks is appreciated. Any ideas on development will also be happy to be heard, you can leave your questions and suggestions in the "[Issues](https://github.com/SerVB/TheRecentStatOfYou/issues)" tab.
@@ -133,7 +133,7 @@ To build badges modification, run the `badgesModifier/battleBadgesModifier.py` f
 
 ## Known issues
 - If you use the recent stat feature, at a battle loading start you can notice a lag of 3-10 seconds. It's because of the relatively big amount of data downloading from the Internet. I think there is no possible fix because speed is restricted by the provider.
-- Sometimes there are messages in the log like "can't find player name, use slow search". Maybe it's because the mod just renames players. There is no symptoms have been noticed. Anyway, in future game versions, it can become a problem...
+- Sometimes there are messages in the log like "can't find player name, use slow search". Maybe it's because the mod just renames players. There are no symptoms have been noticed. Anyway, in future game versions, it can become a problem...
 
 ## FAQ
 **Q**. The mod isn't adopted for a new World of Tanks version.
