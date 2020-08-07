@@ -6,11 +6,31 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: SerVB/setup-python@customPythonVersion
+      - name: Setup Python 2.7.7
+        uses: SerVB/setup-python@customPythonVersion
         with:
           python-version: "2.7.7"
           architecture: "x86"
       - name: Clone repo
         uses: actions/checkout@master
+
       - name: Build recent-stat
         run: python2 build.py
+      - name: Upload recent-stat artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: recent-stat
+          path: build/*
+          if-no-files-found: error
+
+      - name: Build recent-stat-badges
+        run: |
+          cd badgesModifier
+          pip3 install -r requirements.txt
+          ./modifyBadges.sh
+      - name: Upload recent-stat-badges artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: recent-stat-badges
+          path: badgesModifier/build/*
+          if-no-files-found: error
