@@ -7,10 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Python 2.7.7
-        uses: SerVB/setup-python@customPythonVersion
-        with:
-          python-version: "2.7.7"
-          architecture: "x86"
+        run: |
+          wget https://github.com/SerVB/setup-python/releases/download/2.7.7/python_2.7.7-1_amd64.deb
+          sudo apt install ./python_2.7.7-1_amd64.deb -y --allow-downgrades
       - name: Clone repo
         uses: actions/checkout@master
 
