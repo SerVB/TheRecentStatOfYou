@@ -53,7 +53,9 @@ def main():
         rectangle[2] -= dx
         rectangle[1] += dy
         rectangle[3] -= dy
-        draw.ellipse(rectangle, fill=colors[badgeName], outline=(192, 192, 192, 128))
+        fillColor = colors[badgeName]
+        halvedAlphaColor = fillColor[:3] + (128,)
+        draw.ellipse(rectangle, fill=fillColor, outline=halvedAlphaColor)
 
     image.save(TARGET_IMAGE)
     copyfile(SRC_XML, TARGET_XML)
