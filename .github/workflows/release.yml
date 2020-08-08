@@ -1,0 +1,68 @@
+name: Upload Release Asset
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  main:
+    name: Upload Release Asset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Python 2.7.7
+        run: |
+          wget https://github.com/SerVB/setup-python/releases/download/2.7.7/python_2.7.7-1_amd64.deb
+          sudo apt install ./python_2.7.7-1_amd64.deb -y --allow-downgrades
+      - name: Clone repo
+        uses: actions/checkout@master
+
+      - name: Build recent-stat
+        run: python2 build.py
+      - name: Build recent-stat-badges
+        run: |
+          cd badgesModifier
+          pip3 install -r requirements.txt
+          ./modifyBadges.sh
+
+      - name: recent-stat version
+        id: recent_stat_version
+        run: |
+          python3 -c "import json; \
+          config = json.load(open('build.json', 'r')); \
+          print('::set-output name=VERSION::', config['wotVersion'], '-', config['modVersion'], sep='');"
+      - name: recent-stat-badges version
+        id: recent_stat_badges_version
+        run: |
+          python3 -c "import json; \
+          config = json.load(open('badgesModifier/build.json', 'r')); \
+          print('::set-output name=VERSION::', config['wotVersion'], '-', config['modVersion'], sep='');"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset for recent-stat
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/io.github.servb.recent_stat_${{ steps.recent_stat_version.outputs.VERSION }}.wotmod
+          asset_name: io.github.servb.recent_stat_${{ steps.recent_stat_version.outputs.VERSION }}.wotmod
+          asset_content_type: application/octet-stream
+      - name: Upload Release Asset for recent-stat-badges
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: badgesModifier/build/io.github.servb.recent_stat_badges_${{ steps.recent_stat_badges_version.outputs.VERSION }}.wotmod
+          asset_name: io.github.servb.recent_stat_badges_${{ steps.recent_stat_badges_version.outputs.VERSION }}.wotmod
+          asset_content_type: application/octet-stream
