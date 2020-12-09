@@ -7,7 +7,7 @@ try:
 
     import BigWorld
 
-    from gui.Scaleform.daapi.view.battle.shared.stats_exchage.vehicle import VehicleInfoComponent
+    from gui.Scaleform.daapi.view.battle.shared.stats_exchange.vehicle import VehicleInfoComponent
     from gui.battle_control.arena_info.arena_dp import ArenaDataProvider
     from gui.battle_control.arena_info.player_format import PlayerFullNameFormatter, _PlayerFormatResult
     from gui.SystemMessages import SM_TYPE, pushMessage
