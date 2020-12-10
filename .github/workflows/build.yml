@@ -13,6 +13,11 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@master
 
+      - name: Run tests
+        run: |
+          cd test
+          python2 test.py
+
       - name: Build recent-stat
         run: python2 build.py
       - name: Upload recent-stat artifact
