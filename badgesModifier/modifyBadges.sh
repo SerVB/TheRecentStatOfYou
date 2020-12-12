@@ -11,4 +11,4 @@ convert battleAtlas.png battleAtlas.dds
 rm battleAtlas.png
 cd -
 
-python2 build.py
+docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp python:2.7.7 python build.py
