@@ -10,15 +10,11 @@ jobs:
     name: Upload Release Asset
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Python 2.7.7
-        run: |
-          wget https://github.com/SerVB/setup-python/releases/download/2.7.7/python_2.7.7-1_amd64.deb
-          sudo apt install ./python_2.7.7-1_amd64.deb -y --allow-downgrades
       - name: Clone repo
         uses: actions/checkout@master
 
       - name: Build recent-stat
-        run: python2 build.py
+        run: docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp python:2.7.7 python build.py
       - name: Build recent-stat-badges
         run: |
           cd badgesModifier
