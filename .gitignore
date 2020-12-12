@@ -1,6 +1,7 @@
 .idea/
 build/
 decompiled/
+venv*/
 *.iml
 *.ipr
 *.iws
